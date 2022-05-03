@@ -1,0 +1,18 @@
+<?php
+/*
+ * Copyright © 2022 Beehexa All rights reserved.
+ * See COPYING.txt for license details.
+ */
+/**
+ * @var $block \Beehexa\HexaSync\Block\System\Config\Form\Field\RegisterStore
+ */
+?>
+<button class="scalable" type="button" id="<?= $block->getHtmlId() ?>"
+    <?= $this->getDisabled() ? 'disabled' : '' ?> data-mage-init='{"beehexaGenerateIntegration":{
+    "url": "<?= $block->escapeUrl($block->getAjaxUrl()) ?>",
+    "redirect": "<?= $block->escapeUrl($block->getRedirectUrl()) ?>",
+    "elementId": "<?= $block->getHtmlId() ?>",
+    "successText": "<?= $block->escapeHtmlAttr(__('Successful!?')) ?>",
+    "failedText": "<?= $block->escapeHtmlAttr(__('Re-Generation failed! Try again?')) ?>"}}'>
+    <span id="<?= $block->getHtmlId() ?>_result"><?= $block->escapeHtml($block->getButtonLabel()) ?></span>
+</button>

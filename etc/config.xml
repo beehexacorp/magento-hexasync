@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright © 2022 Beehexa All rights reserved.
+  ~ See COPYING.txt for license details.
+  -->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <hexasync>
+            <integration_name>HexaSync Integration User</integration_name>
+        </hexasync>
+        <beehexa>
+            <hexasync>
+                <is_production>0</is_production>
+                <production_service><![CDATA[https://app.hexasync.com/]]></production_service>
+                <sanbox_service><![CDATA[https://app-de.hexasync.com/]]></sanbox_service>
+            </hexasync>
+        </beehexa>
+    </default>
+</config>
