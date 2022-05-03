@@ -10,9 +10,8 @@
 <button class="scalable" type="button" id="<?= $block->getHtmlId() ?>"
     <?= $this->getDisabled() ? 'disabled' : '' ?> data-mage-init='{"beehexaGenerateIntegration":{
     "url": "<?= $block->escapeUrl($block->getAjaxUrl()) ?>",
-    "redirect": "<?= $block->escapeUrl($block->getRedirectUrl()) ?>",
     "elementId": "<?= $block->getHtmlId() ?>",
-    "successText": "<?= $block->escapeHtmlAttr(__('Successful!?')) ?>",
+    "successText": "<?= $block->escapeHtmlAttr(__('Successful!')) ?>",
     "failedText": "<?= $block->escapeHtmlAttr(__('Re-Generation failed! Try again?')) ?>"}}'>
     <span id="<?= $block->getHtmlId() ?>_result"><?= $block->escapeHtml($block->getButtonLabel()) ?></span>
 </button>

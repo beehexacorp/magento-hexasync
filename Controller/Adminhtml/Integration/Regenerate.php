@@ -58,7 +58,8 @@ class Regenerate extends BackendAction
                 'errorMessage' => '',
             ];
             try {
-                $this->hexaSyncManagement->generate();
+                $this->hexaSyncManagement->generateIntegration();
+                $result['success'] = true;
             } catch (AlreadyExistsException $e) {
                 $result['errorMessage'] = $e->getMessage();
             } catch (\Exception $e) {
@@ -71,7 +72,7 @@ class Regenerate extends BackendAction
             return $resultJson->setData($result);
         } else {
             try {
-                $this->hexaSyncManagement->generate();
+                $this->hexaSyncManagement->generateIntegration();
                 $this->messageManager->addSuccessMessage(__("The account was generated successfully."));
             } catch (\Exception $e) {
                 $this->messageManager->addErrorMessage(__($e->getMessage()));

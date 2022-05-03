@@ -7,24 +7,24 @@
 namespace Beehexa\HexaSync\Api;
 
 use Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterface;
-use Magento\Integration\Model\Integration as IntegrationModel;
+use Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface;
 
 interface HexaSyncIntegrationInterface
 {
     /**
-     * @param $name
+     * @param string $name
      * @return HexaSyncIntegrationDataInterface
      */
-    public function getByName($name);
+    public function getByName(string $name): HexaSyncIntegrationDataInterface;
 
     /**
-     * @param string|null $storeCode
-     * @return HexaSyncIntegrationDataInterface
+     * @param HexaSyncInfoDataInterface $connector
+     * @return HexaSyncInfoDataInterface
      */
-    public function register(?string $storeCode);
+    public function saveConnectorInfo(HexaSyncInfoDataInterface $connector): HexaSyncInfoDataInterface;
 
     /**
      * @return int
      */
-    public function generate();
+    public function generateIntegration(): int;
 }

@@ -6,25 +6,24 @@
 
 namespace Beehexa\HexaSync\Model;
 
+use Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface;
+use Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterface;
 use Beehexa\HexaSync\Api\HexaSyncIntegrationInterface;
 use Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterfaceFactory;
 use Beehexa\Base\Helper\Data as BeehexaData;
 use Magento\Config\Model\Config as SystemConfig;
+use Magento\Framework\App\Config\ConfigResource\ConfigInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Integration\Api\IntegrationServiceInterface;
-use Magento\Integration\Api\OauthServiceInterface;
-use Magento\Integration\Model\ConfigBasedIntegrationManager;
 use Magento\Integration\Model\Integration;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\Event\ManagerInterface as EventManager;
+use Beehexa\HexaSync\Model\Context as HexaSyncContext;
 
 class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
 {
-
-    /**
-     * @var BeehexaData
-     */
-    protected $beehexaHelper;
+    protected $_eventPrefix = 'beehexa_hexasync';
 
     /**
      * @var StoreManagerInterface
@@ -34,7 +33,12 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     /**
      * @var SystemConfig
      */
-    private $config;
+    private $systemConfig;
+
+    /**
+     * @var ConfigInterface
+     */
+    private $storeConfigManager;
 
     /**
      * @var IntegrationServiceInterface
@@ -42,42 +46,34 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     private $integrationService;
 
     /**
-     * @var OauthServiceInterface
+     * @var EventManager
      */
-    private $oauthService;
-
-    /**
-     * @var ConfigBasedIntegrationManager
-     */
-    private $configBasedIntegrationManager;
+    private $eventManager;
 
     /**
      * IntegrationManager constructor
      *
-     * @param SystemConfig                            $config
-     * @param BeehexaData                             $beehexaHelper
-     * @param StoreManagerInterface                   $storeManager
-     * @param IntegrationServiceInterface             $integrationService
-     * @param ConfigBasedIntegrationManager           $configBasedIntegrationManager
-     * @param HexaSyncIntegrationDataInterfaceFactory $hexaSyncIntegrationDataInterfaceFactory
-     * @param OauthServiceInterface                   $oauthService
+     * @param HexaSyncContext             $context
+     * @param EventManager                $eventManager
+     * @param SystemConfig                $systemConfig
+     * @param ConfigInterface             $configManager
+     * @param StoreManagerInterface       $storeManager
+     * @param IntegrationServiceInterface $integrationService
      */
     public function __construct(
-        SystemConfig                            $config,
-        BeehexaData                             $beehexaHelper,
-        StoreManagerInterface                   $storeManager,
-        IntegrationServiceInterface             $integrationService,
-        ConfigBasedIntegrationManager           $configBasedIntegrationManager,
-        HexaSyncIntegrationDataInterfaceFactory $hexaSyncIntegrationDataInterfaceFactory,
-        OauthServiceInterface                   $oauthService
+        HexaSyncContext             $context,
+        EventManager                $eventManager,
+        SystemConfig                $systemConfig,
+        ConfigInterface             $configManager,
+        StoreManagerInterface       $storeManager,
+        IntegrationServiceInterface $integrationService
     ) {
         $this->integrationService = $integrationService;
-        $this->beehexaHelper = $beehexaHelper;
-        $this->hexaSyncIntegrationDataInterfaceFactory = $hexaSyncIntegrationDataInterfaceFactory;
-        $this->configBasedIntegrationManager = $configBasedIntegrationManager;
-        $this->config = $config;
-        $this->oauthService = $oauthService;
+        $this->hexaSyncIntegrationDataInterfaceFactory = $context->getHexaSyncIntegrationDataInterfaceFactory();
+        $this->systemConfig = $systemConfig;
         $this->storeManager = $storeManager;
+        $this->storeConfigManager = $configManager;
+        $this->eventManager = $eventManager;
     }
 
     /**
@@ -96,25 +92,12 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
         $integrationData = $this->getIntegrationData($integration->getName(), Integration::STATUS_ACTIVE);
         unset($integrationData['entity_id']);
         $integrationData['integration_id'] = $integration->getId();
+        $this->eventManager->dispatch($this->_eventPrefix .  '_active_before', ['integration' =>  $integration]);
         $this->integrationService->update($integrationData);
+        $this->eventManager->dispatch($this->_eventPrefix .  '_active_after', ['integration' =>  $integration]);
         return true;
     }
 
-    /**
-     * This method execute Generate Token command and enable integration
-     *
-     * @return bool|\Magento\Integration\Model\Oauth\Token
-     * @throws \Magento\Framework\Exception\IntegrationException
-     */
-    public function generateToken()
-    {
-        $consumerId = $this->generateIntegration()->getConsumerId();
-        $accessToken = $this->oauthService->getAccessToken($consumerId);
-        if (!$accessToken && $this->oauthService->createAccessToken($consumerId, true)) {
-            $accessToken = $this->oauthService->getAccessToken($consumerId);
-        }
-        return $accessToken;
-    }
 
     /**
      * Returns consumer Id for Hexasync integration user
@@ -122,12 +105,15 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
      * @return \Magento\Integration\Model\Integration
      * @throws \Magento\Framework\Exception\IntegrationException
      */
-    public function generateIntegration()
+    private function _generateIntegration()
     {
         $integration = $this->getIntegration();
         if (!$integration->getId()) {
-            $integrationName = $this->config->getConfigDataValue('hexasync/integration_name');
-            $integration = $this->integrationService->create($this->getIntegrationData($integrationName));
+            $integrationName = $this->systemConfig->getConfigDataValue('hexasync/integration_name');
+            $integrationData = $this->getIntegrationData($integrationName);
+            $this->eventManager->dispatch($this->_eventPrefix .  '_generate_before', ['integration_data' =>  $integrationData]);
+            $integration = $this->integrationService->create($integrationData);
+            $this->eventManager->dispatch($this->_eventPrefix .  '_generate_after', ['integration' =>  $integration]);
         }
         return $integration;
     }
@@ -137,7 +123,7 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
      */
     public function getIntegration()
     {
-        $integrationName = $this->config->getConfigDataValue('hexasync/integration_name');
+        $integrationName = $this->systemConfig->getConfigDataValue('hexasync/integration_name');
         $integration = $this->integrationService->findByName($integrationName);
         return $integration;
     }
@@ -163,35 +149,6 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     }
 
     /**
-     * @inheirtDoc
-     */
-    public function generate()
-    {
-        $integration = $this->getIntegration();
-        if ($integration->getId()) {
-            throw new AlreadyExistsException(__("The integration '%1' already exists", $integration->getName()));
-        }
-        $integration = $this->generateIntegration();
-        return $integration->getId();
-    }
-
-    /**
-     * @inheirtDoc
-     */
-    public function getByName($name)
-    {
-        $integration = $this->integrationService->findByName($name);
-        //Implement later.
-        $hexaSyncData = $this->hexaSyncIntegrationDataInterfaceFactory->create(['data' => [
-            'access_token'        => $integration->getData('access_token'),
-            'access_token_secret' => $integration->getData('access_token_secret'),
-            'consumer_key'        => $integration->getData('consumer_key'),
-            'consumer_secret'     => $integration->getData('consumer_secret')]
-        ]);
-        return $hexaSyncData;
-    }
-
-    /**
      * Returns default attributes for MA integration user
      *
      * @param string $integrationName
@@ -211,4 +168,44 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
         return $integrationData;
     }
 
+    /**
+     * @inheirtDoc
+     */
+    public function getByName($name): HexaSyncIntegrationDataInterface
+    {
+        $integration = $this->integrationService->findByName($name);
+        //Implement later.
+        $hexaSyncData = $this->hexaSyncIntegrationDataInterfaceFactory->create(['data' => [
+            'access_token'        => $integration->getData('access_token'),
+            'access_token_secret' => $integration->getData('access_token_secret'),
+            'consumer_key'        => $integration->getData('consumer_key'),
+            'consumer_secret'     => $integration->getData('consumer_secret')]
+        ]);
+        return $hexaSyncData;
+    }
+
+    /**
+     * @inheirtDoc
+     */
+    public function generateIntegration(): int
+    {
+        $integration = $this->getIntegration();
+        if ($integration->getId()) {
+            throw new AlreadyExistsException(__("The integration '%1' already exists", $integration->getName()));
+        }
+        $integration = $this->_generateIntegration();
+        return $integration->getId();
+    }
+
+    /**
+     * @inheirtDoc
+     */
+    public function saveConnectorInfo(HexaSyncInfoDataInterface $connector): HexaSyncInfoDataInterface
+    {
+        $this->storeConfigManager->saveConfig(BeehexaData::XML_CONFIG_PREFIX . '/connector/account', $connector->getAccount());
+        $this->storeConfigManager->saveConfig(BeehexaData::XML_CONFIG_PREFIX . '/connector/status', $connector->getStatus());
+        $this->storeConfigManager->saveConfig(BeehexaData::XML_CONFIG_PREFIX . '/connector/store_name', $connector->getStoreName());
+        $this->storeConfigManager->saveConfig(BeehexaData::XML_CONFIG_PREFIX . '/connector/version', $connector->getVersion());
+        return $connector;
+    }
 }

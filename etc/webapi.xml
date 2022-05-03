@@ -6,14 +6,14 @@
 
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
-    <route url="/V1/beehexa/hexasync/register-integration" method="POST">
-        <service class="Beehexa\HexaSync\Api\HexaSyncIntegrationInterface" method="register"/>
+    <route url="/V1/beehexa/hexasync/connector-information" method="POST">
+        <service class="Beehexa\HexaSync\Api\HexaSyncIntegrationInterface" method="saveConnectorInfo"/>
         <resources>
             <resource ref="Magento_Backend::admin"/>
         </resources>
     </route>
     <route url="/V1/beehexa/hexasync/generate-integration" method="POST">
-        <service class="Beehexa\HexaSync\Api\HexaSyncIntegrationInterface" method="generate"/>
+        <service class="Beehexa\HexaSync\Api\HexaSyncIntegrationInterface" method="generateIntegration"/>
         <resources>
             <resource ref="Magento_Backend::admin"/>
         </resources>

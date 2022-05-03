@@ -38,8 +38,7 @@ class AddingIntegrationUser implements DataPatchInterface
      */
     public function apply()
     {
-        $this->integrationManager->generateToken();
-        $this->integrationManager->activateIntegration();
+        $this->integrationManager->generateIntegration();
         return $this;
     }
 

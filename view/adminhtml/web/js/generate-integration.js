@@ -8,9 +8,10 @@
  */
 define([
     'jquery',
+    'Magento_Ui/js/modal/confirm',
     'Magento_Ui/js/modal/alert',
     'jquery/ui'
-], function ($, alert) {
+], function ($, confirm, alert) {
     'use strict';
 
     $.widget('mage.beehexaGenerateIntegration', {
@@ -52,6 +53,8 @@ define([
                 if (response[fieldToCheck]) {
                     element.removeClass('fail').addClass('success');
                     result = self.options.successText;
+                    confirmSetLocation('Active Integration Account?',
+                        $("[data-ui-id=\"menu-magento-integration-system-integrations\"] a").attr('href'));
                 } else {
                     msg = response.message ? response.message : response.errorMessage;
 

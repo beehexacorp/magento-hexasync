@@ -55,7 +55,6 @@ class GenerateIntegration extends \Magento\Config\Block\System\Config\Form\Field
             [
                 'button_label' => __($originalData['button_label']),
                 'html_id'      => $element->getHtmlId(),
-                'redirect_url' => $this->_urlBuilder->getUrl('admin/integration/index/'),
                 'ajax_url'     => $this->_urlBuilder->getUrl('hexasync/integration/regenerate'),
                 'disabled'     => !!$integration->getId()
             ]

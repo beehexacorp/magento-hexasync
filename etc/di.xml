@@ -8,4 +8,6 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterface" type="Beehexa\HexaSync\Model\Data\HexaSyncIntegrationData"/>
     <preference for="Beehexa\HexaSync\Api\HexaSyncIntegrationInterface" type="Beehexa\HexaSync\Model\HexaSyncIntegrationManagement"/>
+    <preference for="Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface"
+                type="Beehexa\HexaSync\Model\Data\HexaSyncInfoData"/>
 </config>
