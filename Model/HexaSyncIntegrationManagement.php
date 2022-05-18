@@ -51,6 +51,11 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     private $eventManager;
 
     /**
+     * @var HexaSyncIntegrationDataInterfaceFactory
+     */
+    protected $hexaSyncIntegrationDataInterfaceFactory;
+
+    /**
      * IntegrationManager constructor
      *
      * @param HexaSyncContext             $context
@@ -161,8 +166,8 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
             'name'              => $integrationName,
             'status'            => $status,
             'all_resources'     => true,
-            'endpoint'          => 'https://www.beehexa.com/test/callback.php',
-            'identity_link_url' => 'https://www.beehexa.com/test/login.php',
+            'endpoint'          => 'https://app.hexasync.com/callback/magento',
+            'identity_link_url' => 'https://app.hexasync.com/callback/magento',
             'resource'          => [],
         ];
         return $integrationData;

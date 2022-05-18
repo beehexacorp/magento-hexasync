@@ -7,21 +7,20 @@
 namespace Beehexa\HexaSync\Api;
 
 use Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterface;
-use Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface;
 
 interface HexaSyncIntegrationInterface
 {
     /**
      * @param string $name
-     * @return HexaSyncIntegrationDataInterface
+     * @return \Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterface
      */
-    public function getByName(string $name): HexaSyncIntegrationDataInterface;
+    public function getByName(string $name): \Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterface;
 
     /**
-     * @param HexaSyncInfoDataInterface $connector
-     * @return HexaSyncInfoDataInterface
+     * @param \Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface $connector
+     * @return \Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface
      */
-    public function saveConnectorInfo(HexaSyncInfoDataInterface $connector): HexaSyncInfoDataInterface;
+    public function saveConnectorInfo(\Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface $connector): \Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface;
 
     /**
      * @return int
