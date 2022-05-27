@@ -5,10 +5,11 @@
   "type": "magento2-module",
   "require": {
     "magento/framework": "*",
-    "beehexa/module-base": "1.0.*"
+    "beehexa/module-base": "1.*"
   },
   "license": [
-    "GNU General Public License (GPL)"
+      "OSL-3.0",
+      "AFL-3.0"
   ],
   "autoload": {
     "files": [
