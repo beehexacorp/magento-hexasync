@@ -1,22 +1,23 @@
 {
-  "name": "beehexa/module-hexa-sync",
-  "version": "1.0.0",
-  "description": "Beehexa HexaSync integration",
-  "type": "magento2-module",
-  "require": {
-    "magento/framework": "*",
-    "beehexa/module-base": "1.*"
-  },
-  "license": [
-      "OSL-3.0",
-      "AFL-3.0"
-  ],
-  "autoload": {
-    "files": [
-      "registration.php"
+    "name": "beehexa/module-hexa-sync",
+    "version": "1.0.0",
+    "description": "Beehexa HexaSync integration",
+    "type": "magento2-module",
+    "require": {
+        "php": "~7.2 || ~8.0 || ~8.1",
+        "magento/framework": "*",
+        "beehexa/module-base": "1.*"
+    },
+    "license": [
+        "OSL-3.0",
+        "AFL-3.0"
     ],
-    "psr-4": {
-      "Beehexa\\HexaSync\\": ""
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Beehexa\\HexaSync\\": ""
+        }
     }
-  }
 }
