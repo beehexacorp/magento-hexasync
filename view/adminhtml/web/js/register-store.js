@@ -36,7 +36,7 @@ define([
          */
         _connect: function () {
             var result = this.options.failedText,
-                element =  $('#' + this.options.elementId),
+                element = $('#' + this.options.elementId),
                 self = this,
                 params = {
                     register: true
@@ -54,6 +54,13 @@ define([
                 if (response[fieldToCheck]) {
                     element.removeClass('fail').addClass('success');
                     result = self.options.successText;
+                    var $tokenKey = response['encrypt'];
+                    this.child = window.open(
+                        'https://app.hexasync.com/callback/magento' +
+                        '?' + 'k=' + $tokenKey,
+                        "Register Store",
+                        'width=700,height=620,left=1862,top=326'
+                    );
                 } else {
                     msg = response.errorMessage;
 
@@ -66,7 +73,18 @@ define([
             }).always(function () {
                 $('#' + self.options.elementId + '_result').text(result);
             });
-        }
+        },
+        _checkChild: function () {
+            var self = this,
+                timer;
+
+            timer = setInterval(function () {
+                if (self.child.closed) {
+                    window.location.reload();
+                    clearInterval(timer);
+                }
+            }, 1000);
+        },
     });
 
     return $.mage.beehexaRegisterStore;

@@ -98,4 +98,21 @@ class HexaSyncIntegrationData extends DataObject implements HexaSyncIntegrationD
     {
         $this->setData(self::CONSUMER_SECRET, $consumerSecret);
     }
+
+    /**
+     * @return string|void
+     */
+    public function getBaseUrl()
+    {
+        return $this->getData(self::BASE_URL);
+    }
+
+    /**
+     * @param $baseURL
+     * @return void
+     */
+    public function setBaseUrl($baseURL)
+    {
+        $this->setData(self::BASE_URL, $baseURL);
+    }
 }

@@ -6,7 +6,7 @@
 
 namespace Beehexa\HexaSync\Model;
 
-use Beehexa\Base\Helper\Data as BeehexaData;
+use Beehexa\HexaSync\Helper\Data as BeehexaData;
 use Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterfaceFactory;
 
 class Context

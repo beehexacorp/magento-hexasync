@@ -6,8 +6,6 @@
 
 namespace Beehexa\HexaSync\Api;
 
-use Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterface;
-
 interface HexaSyncIntegrationInterface
 {
     /**
@@ -23,7 +21,22 @@ interface HexaSyncIntegrationInterface
     public function saveConnectorInfo(\Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface $connector): \Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface;
 
     /**
-     * @return int
+     * @param Data\HexaSyncInfoDataInterface $hexaSyncData
+     * @return string
      */
-    public function generateIntegration(): int;
+    public function encrypt(\Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface $hexaSyncData);
+
+    /**
+     * @return \Magento\Integration\Model\Integration
+     */
+    public function generateIntegration();
+
+    /**
+     * Activate predefined integration user
+     *
+     * @return bool
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws \Magento\Framework\Exception\IntegrationException
+     */
+    public function activateIntegration($integration = null);
 }

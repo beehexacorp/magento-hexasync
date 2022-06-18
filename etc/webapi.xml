@@ -12,10 +12,4 @@
             <resource ref="Magento_Backend::admin"/>
         </resources>
     </route>
-    <route url="/V1/beehexa/hexasync/generate-integration" method="POST">
-        <service class="Beehexa\HexaSync\Api\HexaSyncIntegrationInterface" method="generateIntegration"/>
-        <resources>
-            <resource ref="Magento_Backend::admin"/>
-        </resources>
-    </route>
 </routes>

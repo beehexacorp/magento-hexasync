@@ -11,8 +11,9 @@ use Magento\Backend\App\Action as BackendAction;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultFactory;
-use Magento\Store\Model\StoreManagerInterface;
+use Magento\Integration\Model\Integration;
 use Magento\Store\Model\GroupRepository;
+use Magento\Store\Model\StoreManagerInterface;
 
 class Register extends BackendAction
 {
@@ -77,8 +78,28 @@ class Register extends BackendAction
                 $storeId = $group->getDefaultStoreId();
             }
         }
-        // @TODO implement register
-        $this->hexaSyncManagement->register($storeId);
+        try {
+            $integration = $this->hexaSyncManagement->getIntegration();
+            if (!$integration->getId() || $integration->getStatus() == Integration::STATUS_INACTIVE) {
+                if (!$integration->getId()) {
+                    $integration = $this->hexaSyncManagement->generateIntegration();
+                }
+                $accessToken = $this->hexaSyncManagement->generateToken($integration);
+                if ($accessToken) {
+                    if (!$this->hexaSyncManagement->activateIntegration($integration)) {
+                        throw new \Exception("Activation failed, please try again on System -> Integration");
+                    }
+                } else {
+                    throw new \Exception("Can not generate access token, please try again on System -> Integration");
+                }
+            }
+            $hexaSyncData = $this->hexaSyncManagement->register($integration->getId(), $storeId);
+            $encryptString = $this->hexaSyncManagement->encrypt($hexaSyncData);
+            $result['success'] = true;
+            $result['encrypt'] = urlencode(base64_encode($encryptString));
+        } catch (\Exception $e) {
+            $result['errorMessage'] = $e->getMessage();
+        }
         /** @var \Magento\Framework\Controller\Result\Json $resultJson */
         $resultJson = $this->resultFactory->create(ResultFactory::TYPE_JSON);
         return $resultJson->setData($result);

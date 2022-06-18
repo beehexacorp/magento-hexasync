@@ -5,6 +5,7 @@
     "type": "magento2-module",
     "require": {
         "php": "~7.2 || ~8.0 || ~8.1",
+        "phpseclib/phpseclib": "~3",
         "magento/framework": "*",
         "beehexa/module-base": "1.*"
     },

@@ -15,6 +15,24 @@ interface HexaSyncIntegrationDataInterface
     const ACCESS_TOKEN_SECRET = "access_token_secret";
     const CONSUMER_KEY        = "consumer_key";
     const CONSUMER_SECRET     = "consumer_secret";
+    const BASE_URL            = "base_url";
+    const STORE_NAME          = "store_name";
+    const STORE_CODE          = "store_code";
+
+    /**
+     * Getter for AdminURL.
+     *
+     * @return string
+     */
+    public function getBaseUrl();
+
+    /**
+     * Setter for AdminURL
+     *
+     * @param $baseURL
+     * @return void
+     */
+    public function setBaseUrl($baseURL);
 
     /**
      * Getter for AccessToken.

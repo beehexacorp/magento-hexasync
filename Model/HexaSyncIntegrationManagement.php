@@ -6,20 +6,23 @@
 
 namespace Beehexa\HexaSync\Model;
 
+use Beehexa\Base\Helper\Data as BeehexaData;
 use Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface;
 use Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterface;
-use Beehexa\HexaSync\Api\HexaSyncIntegrationInterface;
 use Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterfaceFactory;
-use Beehexa\Base\Helper\Data as BeehexaData;
+use Beehexa\HexaSync\Api\HexaSyncIntegrationInterface;
+use Beehexa\HexaSync\Encryption\EncryptorInterface;
+use Beehexa\HexaSync\Model\Context as HexaSyncContext;
+use Magento\Backend\Model\UrlInterface;
 use Magento\Config\Model\Config as SystemConfig;
 use Magento\Framework\App\Config\ConfigResource\ConfigInterface;
+use Magento\Framework\Event\ManagerInterface as EventManager;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Integration\Api\IntegrationServiceInterface;
+use Magento\Integration\Api\OauthServiceInterface;
 use Magento\Integration\Model\Integration;
 use Magento\Store\Model\StoreManagerInterface;
-use Magento\Framework\Event\ManagerInterface as EventManager;
-use Beehexa\HexaSync\Model\Context as HexaSyncContext;
 
 class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
 {
@@ -56,6 +59,17 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     protected $hexaSyncIntegrationDataInterfaceFactory;
 
     /**
+     * @var UrlInterface
+     */
+    protected $backendUrl;
+
+    /**
+     * @var EncryptorInterface
+     */
+    protected $encryptor;
+    protected $oauthService;
+
+    /**
      * IntegrationManager constructor
      *
      * @param HexaSyncContext             $context
@@ -71,7 +85,10 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
         SystemConfig                $systemConfig,
         ConfigInterface             $configManager,
         StoreManagerInterface       $storeManager,
-        IntegrationServiceInterface $integrationService
+        IntegrationServiceInterface $integrationService,
+        EncryptorInterface          $encryptor,
+        OauthServiceInterface       $oauthService,
+        UrlInterface                $backendUrl
     ) {
         $this->integrationService = $integrationService;
         $this->hexaSyncIntegrationDataInterfaceFactory = $context->getHexaSyncIntegrationDataInterfaceFactory();
@@ -79,6 +96,17 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
         $this->storeManager = $storeManager;
         $this->storeConfigManager = $configManager;
         $this->eventManager = $eventManager;
+        $this->backendUrl = $backendUrl;
+        $this->encryptor = $encryptor;
+        $this->oauthService = $oauthService;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAdminUrl()
+    {
+        return $this->backendUrl->getRouteUrl();
     }
 
     /**
@@ -88,21 +116,22 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
      * @throws NoSuchEntityException
      * @throws \Magento\Framework\Exception\IntegrationException
      */
-    public function activateIntegration()
+    public function activateIntegration($integration = null)
     {
-        $integration = $this->getIntegration();
+        if (null == $integration) {
+            $integration = $this->getIntegration();
+        }
         if (!$integration->getId()) {
             throw new NoSuchEntityException(__('Cannot find predefined integration user!'));
         }
         $integrationData = $this->getIntegrationData($integration->getName(), Integration::STATUS_ACTIVE);
         unset($integrationData['entity_id']);
         $integrationData['integration_id'] = $integration->getId();
-        $this->eventManager->dispatch($this->_eventPrefix .  '_active_before', ['integration' =>  $integration]);
+        $this->eventManager->dispatch($this->_eventPrefix . '_active_before', ['integration' => $integration]);
         $this->integrationService->update($integrationData);
-        $this->eventManager->dispatch($this->_eventPrefix .  '_active_after', ['integration' =>  $integration]);
+        $this->eventManager->dispatch($this->_eventPrefix . '_active_after', ['integration' => $integration]);
         return true;
     }
-
 
     /**
      * Returns consumer Id for Hexasync integration user
@@ -116,9 +145,9 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
         if (!$integration->getId()) {
             $integrationName = $this->systemConfig->getConfigDataValue('hexasync/integration_name');
             $integrationData = $this->getIntegrationData($integrationName);
-            $this->eventManager->dispatch($this->_eventPrefix .  '_generate_before', ['integration_data' =>  $integrationData]);
+            $this->eventManager->dispatch($this->_eventPrefix . '_generate_before', ['integration_data' => $integrationData]);
             $integration = $this->integrationService->create($integrationData);
-            $this->eventManager->dispatch($this->_eventPrefix .  '_generate_after', ['integration' =>  $integration]);
+            $this->eventManager->dispatch($this->_eventPrefix . '_generate_after', ['integration' => $integration]);
         }
         return $integration;
     }
@@ -134,23 +163,66 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     }
 
     /**
-     * Register store
-     *
-     * @inheirtDoc
+     * @param int $integrationId
+     * @param string|null $storeCode
+     * @return HexaSyncIntegrationDataInterface
+     * @throws NoSuchEntityException
      */
-    public function register(?string $storeCode)
+    public function register($integrationId, ?string $storeCode)
     {
         $store = $this->storeManager->getStore($storeCode);
-        $storeURL = $store->getBaseUrl();
         $storeName = $store->getName();
+        $storeCode = $store->getCode();
+        $storeURL = $store->getBaseUrl();
         $websiteId = $store->getWebsiteId();
-        $integration = $this->getIntegration();
-        if (!$integration->getId()) {
+        if (!$integrationId) {
             throw new NoSuchEntityException(__('Cannot find predefined integration user!'));
         }
-        //Implement later.
-        $hexaSyncData = $this->hexaSyncIntegrationDataInterfaceFactory->create();
+        //Reload integration for getting consumer and access
+        $integration = $this->integrationService->get($integrationId);
+        $hexaSyncData = $this->hexaSyncIntegrationDataInterfaceFactory->create(['data' => [
+            'access_token'        => $integration->getData('token'),
+            'access_token_secret' => $integration->getData('token_secret'),
+            'consumer_key'        => $integration->getData('consumer_key'),
+            'consumer_secret'     => $integration->getData('consumer_secret'),
+            'base_url'            => $this->getAdminUrl(),
+            'store_name'          => $storeName,
+            'store_code'          => $storeCode,
+        ]]);
         return $hexaSyncData;
+    }
+
+    /**
+     * This method execute Generate Token command and enable integration
+     *
+     * @param Integration $integration
+     * @return bool|\Magento\Integration\Model\Oauth\Token
+     */
+    public function generateToken($integration)
+    {
+        $consumerId = $integration->getConsumerId();
+        $accessToken = $this->oauthService->getAccessToken($consumerId);
+        if (!$accessToken && $this->oauthService->createAccessToken($consumerId, true)) {
+            $accessToken = $this->oauthService->getAccessToken($consumerId);
+        }
+        return $accessToken;
+    }
+
+    /**
+     * @param HexaSyncIntegrationDataInterface $hexaSyncData
+     * @return string
+     */
+    public function encrypt($hexaSyncData)
+    {
+        /**
+         * @var $hexaSyncData \Magento\Framework\DataObject
+         */
+        $hexaSyncDataString = $hexaSyncData->toJson();
+        $encrypted = $this->encryptor->encrypt($hexaSyncDataString);
+        $decrypted = $this->encryptor->decrypt($encrypted);
+        file_put_contents('/app/output_en.txt',  $encrypted);
+        file_put_contents('/app/output_de.txt',  $decrypted);
+        return $encrypted;
     }
 
     /**
@@ -163,12 +235,13 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     private function getIntegrationData($integrationName, $status = Integration::STATUS_INACTIVE)
     {
         $integrationData = [
-            'name'              => $integrationName,
-            'status'            => $status,
-            'all_resources'     => true,
-            'endpoint'          => 'https://app.hexasync.com/callback/magento',
-            'identity_link_url' => 'https://app.hexasync.com/callback/magento',
-            'resource'          => [],
+            'name'          => $integrationName,
+            'status'        => $status,
+            'all_resources' => true,
+            // Remove this because credential will be published to Hexasync by http request.
+            //            'endpoint'          => 'https://app.hexasync.com/callback/magento',
+            //            'identity_link_url' => 'https://app.hexasync.com/callback/magento',
+            'resource'      => [],
         ];
         return $integrationData;
     }
@@ -192,14 +265,14 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     /**
      * @inheirtDoc
      */
-    public function generateIntegration(): int
+    public function generateIntegration()
     {
         $integration = $this->getIntegration();
         if ($integration->getId()) {
             throw new AlreadyExistsException(__("The integration '%1' already exists", $integration->getName()));
         }
         $integration = $this->_generateIntegration();
-        return $integration->getId();
+        return $integration;
     }
 
     /**
