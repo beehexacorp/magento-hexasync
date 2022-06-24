@@ -219,9 +219,6 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
          */
         $hexaSyncDataString = $hexaSyncData->toJson();
         $encrypted = $this->encryptor->encrypt($hexaSyncDataString);
-        $decrypted = $this->encryptor->decrypt($encrypted);
-        file_put_contents('/app/output_en.txt',  $encrypted);
-        file_put_contents('/app/output_de.txt',  $decrypted);
         return $encrypted;
     }
 
