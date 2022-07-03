@@ -11,13 +11,19 @@ interface HexaSyncIntegrationDataInterface
     /**
      * String constants for property names
      */
-    const ACCESS_TOKEN        = "access_token";
-    const ACCESS_TOKEN_SECRET = "access_token_secret";
-    const CONSUMER_KEY        = "consumer_key";
-    const CONSUMER_SECRET     = "consumer_secret";
-    const BASE_URL            = "base_url";
-    const STORE_NAME          = "store_name";
-    const STORE_CODE          = "store_code";
+    public const ACCESS_TOKEN        = "access_token";
+
+    public const ACCESS_TOKEN_SECRET = "access_token_secret";
+
+    public const CONSUMER_KEY        = "consumer_key";
+
+    public const CONSUMER_SECRET     = "consumer_secret";
+
+    public const BASE_URL            = "base_url";
+
+    public const STORE_NAME          = "store_name";
+
+    public const STORE_CODE          = "store_code";
 
     /**
      * Getter for AdminURL.
@@ -29,7 +35,7 @@ interface HexaSyncIntegrationDataInterface
     /**
      * Setter for AdminURL
      *
-     * @param $baseURL
+     * @param string $baseURL
      * @return void
      */
     public function setBaseUrl($baseURL);
@@ -97,5 +103,4 @@ interface HexaSyncIntegrationDataInterface
      * @return void
      */
     public function setConsumerSecret(?string $consumerSecret): void;
-
 }

@@ -12,9 +12,7 @@ use Magento\Framework\DataObject;
 class HexaSyncIntegrationData extends DataObject implements HexaSyncIntegrationDataInterface
 {
     /**
-     * Getter for AccessToken.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getAccessToken(): ?string
     {
@@ -22,11 +20,7 @@ class HexaSyncIntegrationData extends DataObject implements HexaSyncIntegrationD
     }
 
     /**
-     * Setter for AccessToken.
-     *
-     * @param string|null $accessToken
-     *
-     * @return void
+     * @inheritDoc
      */
     public function setAccessToken(?string $accessToken): void
     {
@@ -34,9 +28,7 @@ class HexaSyncIntegrationData extends DataObject implements HexaSyncIntegrationD
     }
 
     /**
-     * Getter for AccessTokenSerect.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getAccessTokenSecret(): ?string
     {
@@ -44,11 +36,7 @@ class HexaSyncIntegrationData extends DataObject implements HexaSyncIntegrationD
     }
 
     /**
-     * Setter for AccessTokenSerect.
-     *
-     * @param string|null $accessTokenSecret
-     *
-     * @return void
+     * @inheritDoc
      */
     public function setAccessTokenSecret(?string $accessTokenSecret): void
     {
@@ -56,9 +44,7 @@ class HexaSyncIntegrationData extends DataObject implements HexaSyncIntegrationD
     }
 
     /**
-     * Getter for ConsumerKey.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getConsumerKey(): ?string
     {
@@ -66,11 +52,7 @@ class HexaSyncIntegrationData extends DataObject implements HexaSyncIntegrationD
     }
 
     /**
-     * Setter for ConsumerKey.
-     *
-     * @param string|null $consumerKey
-     *
-     * @return void
+     * @inheritDoc
      */
     public function setConsumerKey(?string $consumerKey): void
     {
@@ -78,9 +60,7 @@ class HexaSyncIntegrationData extends DataObject implements HexaSyncIntegrationD
     }
 
     /**
-     * Getter for ConsumerSerect.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getConsumerSecret(): ?string
     {
@@ -88,11 +68,7 @@ class HexaSyncIntegrationData extends DataObject implements HexaSyncIntegrationD
     }
 
     /**
-     * Setter for ConsumerSerect.
-     *
-     * @param string|null $consumerSecret
-     *
-     * @return void
+     * @inheritDoc
      */
     public function setConsumerSecret(?string $consumerSecret): void
     {
@@ -100,7 +76,7 @@ class HexaSyncIntegrationData extends DataObject implements HexaSyncIntegrationD
     }
 
     /**
-     * @return string|void
+     * @inheritDoc
      */
     public function getBaseUrl()
     {
@@ -108,8 +84,7 @@ class HexaSyncIntegrationData extends DataObject implements HexaSyncIntegrationD
     }
 
     /**
-     * @param $baseURL
-     * @return void
+     * @inheritDoc
      */
     public function setBaseUrl($baseURL)
     {

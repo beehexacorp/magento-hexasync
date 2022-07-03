@@ -17,6 +17,12 @@ class GenerateIntegration extends \Magento\Config\Block\System\Config\Form\Field
      */
     protected $integrationManager;
 
+    /**
+     * @param Context                       $context
+     * @param HexaSyncIntegrationManagement $integrationManager
+     * @param array                         $data
+     * @param SecureHtmlRenderer|null       $secureRenderer
+     */
     public function __construct(
         Context                       $context,
         HexaSyncIntegrationManagement $integrationManager,
@@ -28,10 +34,7 @@ class GenerateIntegration extends \Magento\Config\Block\System\Config\Form\Field
     }
 
     /**
-     * Set template to itself
-     *
-     * @return $this
-     * @since 100.1.0
+     * @inheritDoc
      */
     protected function _prepareLayout()
     {
@@ -41,11 +44,7 @@ class GenerateIntegration extends \Magento\Config\Block\System\Config\Form\Field
     }
 
     /**
-     * Get the button and scripts contents
-     *
-     * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
-     * @return string
-     * @since 100.1.0
+     * @inheritDoc
      */
     protected function _getElementHtml(\Magento\Framework\Data\Form\Element\AbstractElement $element)
     {

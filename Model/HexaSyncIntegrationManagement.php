@@ -26,6 +26,9 @@ use Magento\Store\Model\StoreManagerInterface;
 
 class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
 {
+    /**
+     * @var string
+     */
     protected $_eventPrefix = 'beehexa_hexasync';
 
     /**
@@ -67,6 +70,10 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
      * @var EncryptorInterface
      */
     protected $encryptor;
+
+    /**
+     * @var OauthServiceInterface
+     */
     protected $oauthService;
 
     /**
@@ -78,6 +85,9 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
      * @param ConfigInterface             $configManager
      * @param StoreManagerInterface       $storeManager
      * @param IntegrationServiceInterface $integrationService
+     * @param EncryptorInterface          $encryptor
+     * @param OauthServiceInterface       $oauthService
+     * @param UrlInterface                $backendUrl
      */
     public function __construct(
         HexaSyncContext             $context,
@@ -102,6 +112,8 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     }
 
     /**
+     * Getter for admin URL
+     *
      * @return string
      */
     public function getAdminUrl()
@@ -110,11 +122,7 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     }
 
     /**
-     * Activate predefined integration user
-     *
-     * @return bool
-     * @throws NoSuchEntityException
-     * @throws \Magento\Framework\Exception\IntegrationException
+     * @inheritDoc
      */
     public function activateIntegration($integration = null)
     {
@@ -134,10 +142,7 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     }
 
     /**
-     * Returns consumer Id for Hexasync integration user
-     *
-     * @return \Magento\Integration\Model\Integration
-     * @throws \Magento\Framework\Exception\IntegrationException
+     * @inheritDoc
      */
     private function _generateIntegration()
     {
@@ -153,6 +158,8 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     }
 
     /**
+     * Getter for integration
+     *
      * @return Integration
      */
     public function getIntegration()
@@ -163,6 +170,8 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     }
 
     /**
+     * Register Integration
+     *
      * @param int $integrationId
      * @param string|null $storeCode
      * @return HexaSyncIntegrationDataInterface
@@ -209,8 +218,7 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     }
 
     /**
-     * @param HexaSyncIntegrationDataInterface $hexaSyncData
-     * @return string
+     * @inheritDoc
      */
     public function encrypt($hexaSyncData)
     {
@@ -244,7 +252,7 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     }
 
     /**
-     * @inheirtDoc
+     * @inheritDoc
      */
     public function getByName($name): HexaSyncIntegrationDataInterface
     {
@@ -260,7 +268,7 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     }
 
     /**
-     * @inheirtDoc
+     * @inheritDoc
      */
     public function generateIntegration()
     {
@@ -273,7 +281,7 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     }
 
     /**
-     * @inheirtDoc
+     * @inheritDoc
      */
     public function saveConnectorInfo(HexaSyncInfoDataInterface $connector): HexaSyncInfoDataInterface
     {

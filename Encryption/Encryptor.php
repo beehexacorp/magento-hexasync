@@ -6,38 +6,56 @@
 
 namespace Beehexa\HexaSync\Encryption;
 
+use Magento\Framework\Filesystem\Io\File as FileManager;
 use Magento\Framework\Module\Dir;
 use Magento\Framework\Module\Dir\Reader as ModuleDirReader;
 use phpseclib3\Crypt\RSA;
-use phpseclib3\Crypt\RSA\PublicKey;
 use phpseclib3\Crypt\RSA\PrivateKey;
-use Beehexa\HexaSync\Helper\Data;
+use phpseclib3\Crypt\RSA\PublicKey;
 
 class Encryptor implements EncryptorInterface
 {
-    const MODULE_NAME = 'Beehexa_HexaSync';
+    public const MODULE_NAME = 'Beehexa_HexaSync';
 
     /**
+     *
      * @var ModuleDirReader
      */
     protected $moduleDirReader;
 
     /**
+     *
      * @var PublicKey|null
      */
     private $publicKey = null;
 
     /**
+     *
      * @var PrivateKey|null
      */
     private $privateKey = null;
 
-    public function __construct(ModuleDirReader $moduleDirReader)
-    {
+    /**
+     *
+     * @var FileManager
+     */
+    private $fileManager;
+
+    /**
+     * @param \Magento\Framework\Filesystem\Io\File $fileManager
+     * @param ModuleDirReader                       $moduleDirReader
+     */
+    public function __construct(
+        FileManager     $fileManager,
+        ModuleDirReader $moduleDirReader
+    ) {
+        $this->fileManager = $fileManager;
         $this->moduleDirReader = $moduleDirReader;
     }
 
     /**
+     * Getter for public key path
+     *
      * @return string
      */
     private function getPublicKeyPath()
@@ -47,6 +65,8 @@ class Encryptor implements EncryptorInterface
     }
 
     /**
+     * Getter for private key path
+     *
      * @return string
      */
     private function getPrivateKeyPath()
@@ -56,6 +76,8 @@ class Encryptor implements EncryptorInterface
     }
 
     /**
+     * Getting public key
+     *
      * @return PublicKey
      * @throws \Exception
      */
@@ -63,17 +85,19 @@ class Encryptor implements EncryptorInterface
     {
         if (null == $this->publicKey) {
             $keyFile = $this->getPublicKeyPath();
-            if (file_exists($keyFile)) {
-                $this->publicKey = RSA::load(file_get_contents($keyFile));
+            if ($this->fileManager->fileExists($keyFile)) {
+                $this->publicKey = RSA::load($this->fileManager->read($keyFile));
                 $this->publicKey->withPadding(PrivateKey::ENCRYPTION_PKCS1);
             } else {
-                throw new \Exception("Public Key does not exists");
+                throw new \LogicException("Public Key does not exists");
             }
         }
         return $this->publicKey;
     }
 
     /**
+     * Getting private key
+     *
      * @return PrivateKey
      * @throws \Exception
      */
@@ -81,19 +105,19 @@ class Encryptor implements EncryptorInterface
     {
         if (null == $this->privateKey) {
             $keyFile = $this->getPrivateKeyPath();
-            if (file_exists($keyFile)) {
-                $this->privateKey = RSA::load(file_get_contents($keyFile));
+            if ($this->fileManager->fileExists($keyFile)) {
+                $this->privateKey = RSA::load($this->fileManager->read($keyFile));
                 $this->privateKey->withPadding(PrivateKey::ENCRYPTION_PKCS1);
 
             } else {
-                throw new \Exception("Public Key does not exists");
+                throw new \LogicException("Public Key does not exists");
             }
         }
         return $this->privateKey;
     }
 
     /**
-     * @inheriDoc
+     * @inheritDoc
      */
     public function encrypt($data)
     {
@@ -102,7 +126,7 @@ class Encryptor implements EncryptorInterface
     }
 
     /**
-     * @inheriDoc
+     * @inheritDoc
      */
     public function decrypt($data)
     {

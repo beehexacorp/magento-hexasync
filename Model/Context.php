@@ -6,8 +6,8 @@
 
 namespace Beehexa\HexaSync\Model;
 
-use Beehexa\HexaSync\Helper\Data as BeehexaData;
 use Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterfaceFactory;
+use Beehexa\HexaSync\Helper\Data as BeehexaData;
 
 class Context
 {
@@ -21,17 +21,21 @@ class Context
      */
     protected $beehexaHelper;
 
-
+    /**
+     * @param BeehexaData                             $beehexaHelper
+     * @param HexaSyncIntegrationDataInterfaceFactory $hexaSyncIntegrationDataInterfaceFactory
+     */
     public function __construct(
         BeehexaData                             $beehexaHelper,
         HexaSyncIntegrationDataInterfaceFactory $hexaSyncIntegrationDataInterfaceFactory
-    )
-    {
+    ) {
         $this->beehexaHelper = $beehexaHelper;
         $this->hexaSyncIntegrationDataInterfaceFactory = $hexaSyncIntegrationDataInterfaceFactory;
     }
 
     /**
+     * Getter for HexaSyncIntegrationDataInterfaceFactory
+     *
      * @return HexaSyncIntegrationDataInterfaceFactory
      */
     public function getHexaSyncIntegrationDataInterfaceFactory(): HexaSyncIntegrationDataInterfaceFactory
@@ -40,11 +44,12 @@ class Context
     }
 
     /**
+     * Getter for BeehexaData
+     *
      * @return BeehexaData
      */
     public function getBeehexaHelper(): BeehexaData
     {
         return $this->beehexaHelper;
     }
-
 }

@@ -31,6 +31,9 @@ class Integration extends DefaultIntegration
         parent::__construct($context, $data);
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function _construct()
     {
         parent::_construct();
@@ -48,7 +51,13 @@ class Integration extends DefaultIntegration
         }
     }
 
-    public function getGenerateUrl(){
+    /**
+     * Getter for generate url
+     *
+     * @return string
+     */
+    public function getGenerateUrl()
+    {
         return $this->getUrl('hexasync/integration/regenerate');
     }
 }

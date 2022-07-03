@@ -33,7 +33,8 @@ class Regenerate extends BackendAction
 
     /**
      * @param Context                      $context
-     * @param HexaSyncIntegrationInterface $hexaSyncManager
+     * @param HexaSyncIntegrationInterface $hexaSyncManagement
+     * @param StripTags                    $stripTags
      */
     public function __construct(
         Context                      $context,
@@ -46,9 +47,7 @@ class Regenerate extends BackendAction
     }
 
     /**
-     * Register store with Hexasync
-     *
-     * @return ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
+     * @inheritDoc
      */
     public function execute()
     {

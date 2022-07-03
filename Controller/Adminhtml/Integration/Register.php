@@ -56,11 +56,7 @@ class Register extends BackendAction
     }
 
     /**
-     * Register store with Hexasync
-     *
-     * @return ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @inheritDoc
      */
     public function execute()
     {
@@ -87,10 +83,10 @@ class Register extends BackendAction
                 $accessToken = $this->hexaSyncManagement->generateToken($integration);
                 if ($accessToken) {
                     if (!$this->hexaSyncManagement->activateIntegration($integration)) {
-                        throw new \Exception("Activation failed, please try again on System -> Integration");
+                        throw new \LogicException("Activation failed, please try again on System -> Integration");
                     }
                 } else {
-                    throw new \Exception("Can not generate access token, please try again on System -> Integration");
+                    throw new \LogicException("Can not generate access token, please try again on System -> Integration");
                 }
             }
             $hexaSyncData = $this->hexaSyncManagement->register($integration->getId(), $storeId);

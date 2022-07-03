@@ -12,7 +12,7 @@ use Magento\Framework\DataObject;
 class HexaSyncInfoData extends DataObject implements HexaSyncInfoDataInterface
 {
     /**
-     * @inheirtDoc
+     * @inheritDoc
      */
     public function getAccount(): ?string
     {
@@ -20,7 +20,7 @@ class HexaSyncInfoData extends DataObject implements HexaSyncInfoDataInterface
     }
 
     /**
-     * @inheirtDoc
+     * @inheritDoc
      */
     public function setAccount(?string $account): void
     {
@@ -28,7 +28,7 @@ class HexaSyncInfoData extends DataObject implements HexaSyncInfoDataInterface
     }
 
     /**
-     * @inheirtDoc
+     * @inheritDoc
      */
     public function getStatus(): ?string
     {
@@ -36,7 +36,7 @@ class HexaSyncInfoData extends DataObject implements HexaSyncInfoDataInterface
     }
 
     /**
-     * @inheirtDoc
+     * @inheritDoc
      */
     public function setStatus(?string $status): void
     {
@@ -44,7 +44,7 @@ class HexaSyncInfoData extends DataObject implements HexaSyncInfoDataInterface
     }
 
     /**
-     * @inheirtDoc
+     * @inheritDoc
      */
     public function getStoreName(): ?string
     {
@@ -52,7 +52,7 @@ class HexaSyncInfoData extends DataObject implements HexaSyncInfoDataInterface
     }
 
     /**
-     * @inheirtDoc
+     * @inheritDoc
      */
     public function setStoreName(?string $storeName): void
     {
@@ -60,7 +60,7 @@ class HexaSyncInfoData extends DataObject implements HexaSyncInfoDataInterface
     }
 
     /**
-     * @inheirtDoc
+     * @inheritDoc
      */
     public function getVersion(): ?string
     {
@@ -68,7 +68,7 @@ class HexaSyncInfoData extends DataObject implements HexaSyncInfoDataInterface
     }
 
     /**
-     * @inheirtDoc
+     * @inheritDoc
      */
     public function setVersion(?string $version): void
     {

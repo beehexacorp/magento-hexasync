@@ -6,7 +6,6 @@
 
 namespace Beehexa\HexaSync\Encryption;
 
-
 interface EncryptorInterface
 {
     /**

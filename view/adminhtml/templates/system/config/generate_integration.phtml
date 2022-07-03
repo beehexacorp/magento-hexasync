@@ -8,7 +8,7 @@
  */
 ?>
 <button class="scalable" type="button" id="<?= $block->getHtmlId() ?>"
-    <?= $this->getDisabled() ? 'disabled' : '' ?> data-mage-init='{"beehexaGenerateIntegration":{
+    <?= $block->getDisabled() ? 'disabled' : '' ?> data-mage-init='{"beehexaGenerateIntegration":{
     "url": "<?= $block->escapeUrl($block->getAjaxUrl()) ?>",
     "elementId": "<?= $block->getHtmlId() ?>",
     "successText": "<?= $block->escapeHtmlAttr(__('Successful!')) ?>",
