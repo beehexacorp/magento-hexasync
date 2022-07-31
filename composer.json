@@ -6,9 +6,17 @@
     "require": {
         "php": "~7.2 || ~8.0 || ~8.1",
         "phpseclib/phpseclib": "~3",
-        "magento/framework": "*",
-        "beehexa/module-base": "1.*"
+        "magento/framework": ">=102",
+        "beehexa/beehexa-base": "~v2.0"
     },
+    "authors": [
+        {
+            "name": "Beehexa",
+            "email": "support@beehexa.com",
+            "homepage": "https://www.beehexa.com/",
+            "role": "Magento 2 plugin contributor"
+        }
+    ],
     "license": [
         "OSL-3.0",
         "AFL-3.0"
