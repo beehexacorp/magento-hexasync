@@ -1,5 +1,5 @@
 {
-    "name": "beehexa/module-hexa-sync",
+    "name": "beehexacorp/module-hexa-sync",
     "version": "24.0.1",
     "description": "Beehexa HexaSync integration",
     "type": "magento2-module",
