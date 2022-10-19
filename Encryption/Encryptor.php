@@ -110,7 +110,7 @@ class Encryptor implements EncryptorInterface
                 $this->privateKey->withPadding(PrivateKey::ENCRYPTION_PKCS1);
 
             } else {
-                throw new \LogicException("Public Key does not exists");
+                throw new \LogicException("Private Key does not exists");
             }
         }
         return $this->privateKey;
