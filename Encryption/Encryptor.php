@@ -86,8 +86,8 @@ class Encryptor implements EncryptorInterface
         if (null == $this->publicKey) {
             $keyFile = $this->getPublicKeyPath();
             if ($this->fileManager->fileExists($keyFile)) {
-                $this->publicKey = RSA::load($this->fileManager->read($keyFile));
-                $this->publicKey->withPadding(PrivateKey::ENCRYPTION_PKCS1);
+                $publicKey = RSA::load($this->fileManager->read($keyFile));
+                $this->publicKey = $publicKey->withPadding(PrivateKey::ENCRYPTION_NONE);
             } else {
                 throw new \LogicException("Public Key does not exists");
             }
@@ -106,9 +106,8 @@ class Encryptor implements EncryptorInterface
         if (null == $this->privateKey) {
             $keyFile = $this->getPrivateKeyPath();
             if ($this->fileManager->fileExists($keyFile)) {
-                $this->privateKey = RSA::load($this->fileManager->read($keyFile));
-                $this->privateKey->withPadding(PrivateKey::ENCRYPTION_PKCS1);
-
+                $privateKey = RSA::load($this->fileManager->read($keyFile));
+                $this->privateKey = $privateKey->withPadding(PrivateKey::ENCRYPTION_NONE);
             } else {
                 throw new \LogicException("Private Key does not exists");
             }
