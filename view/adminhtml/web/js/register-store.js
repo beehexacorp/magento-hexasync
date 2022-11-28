@@ -50,7 +50,9 @@ define([
             element.removeClass('success').addClass('fail');
             var serviceEndpoint = this._getServiceEndpoint();
             if(!serviceEndpoint){
-                alert($t("Service Endpoint is required."));
+                alert({
+                    content: $t("Service Endpoint is required.")
+                });
                 return;
             }
             var params = {
