@@ -17,6 +17,8 @@ interface HexaSyncInfoDataInterface
 
     public const STORE_NAME = "store_name";
 
+    public const STORE_CODE = "store_code";
+
     public const VERSION    = "version";
 
     /**
@@ -66,6 +68,22 @@ interface HexaSyncInfoDataInterface
      * @return void
      */
     public function setStoreName(?string $storeName): void;
+
+    /**
+     * Getter for StoreCode.
+     *
+     * @return string|null
+     */
+    public function getStoreCode(): ?string;
+
+    /**
+     * Setter for StoreCode.
+     *
+     * @param string|null $storeCode
+     *
+     * @return void
+     */
+    public function setStoreCode(?string $storeCode): void;
 
     /**
      * Getter for Version.

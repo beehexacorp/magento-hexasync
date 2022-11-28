@@ -16,8 +16,13 @@
             <resource>Magento_Backend::admin</resource>
             <group id="hexasync" translate="label" type="text" sortOrder="900" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>HexaSync Integration</label>
-                <comment><![CDATA[Registering your website please switch to website scope!!!]]></comment>
-                <field id="production_service" translate="label" type="text" sortOrder="30" showInDefault="1"
+<!-- No need to switch to store view because hexasync does not support
+ <comment><![CDATA[Registering your website please switch to website scope!!!]]></comment>-->
+                <field id="register_info" translate="label" showInDefault="1" showInStore="1" showInWebsite="1">
+                    <label><![CDATA[Registered Information]]></label>
+                    <frontend_model>\Beehexa\HexaSync\Block\System\Config\Form\Field\RegisteredInformation</frontend_model>
+                </field>
+                <field id="production_service" translate="label" type="text" sortOrder="30" showInDefault="1" showInStore="1"
                        showInWebsite="1" >
                     <label><![CDATA[Service Endpoint]]></label>
                     <comment><![CDATA[Example: https://app.hexasync.com]]></comment>

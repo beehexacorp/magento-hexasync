@@ -59,6 +59,23 @@ class HexaSyncInfoData extends DataObject implements HexaSyncInfoDataInterface
         $this->setData(self::STORE_NAME, $storeName);
     }
 
+
+    /**
+     * @inheritDoc
+     */
+    public function getStoreCode(): ?string
+    {
+        return $this->getData(self::STORE_CODE);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setStoreCode(?string $storeCode): void
+    {
+        $this->setData(self::STORE_CODE, $storeCode);
+    }
+
     /**
      * @inheritDoc
      */

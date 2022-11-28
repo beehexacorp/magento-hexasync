@@ -7,6 +7,7 @@
 namespace Beehexa\HexaSync\Model;
 
 use Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface;
+use Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterfaceFactory;
 use Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterface;
 use Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterfaceFactory;
 use Beehexa\HexaSync\Api\HexaSyncIntegrationInterface;
@@ -22,6 +23,7 @@ use Magento\Integration\Api\IntegrationServiceInterface;
 use Magento\Integration\Api\OauthServiceInterface;
 use Magento\Integration\Model\Integration;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Store\Model\ScopeInterface;
 
 class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
 {
@@ -61,6 +63,11 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     protected $hexaSyncIntegrationDataInterfaceFactory;
 
     /**
+     * @var HexaSyncInfoDataInterfaceFactory
+     */
+    protected $hexaSyncInfoDataInterfaceFactory;
+
+    /**
      * @var UrlInterface
      */
     protected $backendUrl;
@@ -74,6 +81,11 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
      * @var OauthServiceInterface
      */
     protected $oauthService;
+
+    /**
+     * @var \Beehexa\HexaSync\Helper\RegisterInformation
+     */
+    protected $registerHelper;
 
     /**
      * IntegrationManager constructor
@@ -101,6 +113,8 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     ) {
         $this->integrationService = $integrationService;
         $this->hexaSyncIntegrationDataInterfaceFactory = $context->getHexaSyncIntegrationDataInterfaceFactory();
+        $this->hexaSyncInfoDataInterfaceFactory = $context->getHexaSyncInfoDataInterfaceFactory();
+        $this->registerHelper = $context->getRegisterHelper();
         $this->systemConfig = $systemConfig;
         $this->storeManager = $storeManager;
         $this->storeConfigManager = $configManager;
@@ -284,10 +298,27 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
      */
     public function saveConnectorInfo(HexaSyncInfoDataInterface $connector): HexaSyncInfoDataInterface
     {
-        $this->storeConfigManager->saveConfig( 'beehexa/connector/account', $connector->getAccount());
-        $this->storeConfigManager->saveConfig( 'beehexa/connector/status', $connector->getStatus());
-        $this->storeConfigManager->saveConfig( 'beehexa/connector/store_name', $connector->getStoreName());
-        $this->storeConfigManager->saveConfig( 'beehexa/connector/version', $connector->getVersion());
+        $store = $this->storeManager->getStore($connector->getStoreCode());
+        $this->storeConfigManager->saveConfig( 'beehexa/connector/account', $connector->getAccount(),ScopeInterface::SCOPE_STORE , $store->getId());
+        $this->storeConfigManager->saveConfig( 'beehexa/connector/status', $connector->getStatus(),ScopeInterface::SCOPE_STORE , $store->getId());
+        $this->storeConfigManager->saveConfig( 'beehexa/connector/store_name', $connector->getStoreName(),ScopeInterface::SCOPE_STORE , $store->getId());
+        $this->storeConfigManager->saveConfig( 'beehexa/connector/version', $connector->getVersion(), ScopeInterface::SCOPE_STORE , $store->getId());
         return $connector;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getConnectorInfo(string $storeId = null): \Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface
+    {
+        $registerData = [];
+        $registerData['account'] = $this->registerHelper->getAccount(ScopeInterface::SCOPE_STORE, $storeId);
+        $registerData['status'] = $this->registerHelper->getStatus(ScopeInterface::SCOPE_STORE, $storeId);
+        $registerData['store_name'] = $this->registerHelper->getStoreName(ScopeInterface::SCOPE_STORE, $storeId);
+        $registerData['version'] = $this->registerHelper->getAPIVersion(ScopeInterface::SCOPE_STORE, $storeId);
+
+        return $this->hexaSyncInfoDataInterfaceFactory->create([
+            'data' => $registerData
+        ]);
     }
 }
