@@ -6,7 +6,6 @@
 
 namespace Beehexa\HexaSync\Model;
 
-use Beehexa\Base\Helper\Data as BeehexaData;
 use Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface;
 use Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterface;
 use Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterfaceFactory;
@@ -285,10 +284,10 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
      */
     public function saveConnectorInfo(HexaSyncInfoDataInterface $connector): HexaSyncInfoDataInterface
     {
-        $this->storeConfigManager->saveConfig(BeehexaData::XML_CONFIG_PREFIX . '/connector/account', $connector->getAccount());
-        $this->storeConfigManager->saveConfig(BeehexaData::XML_CONFIG_PREFIX . '/connector/status', $connector->getStatus());
-        $this->storeConfigManager->saveConfig(BeehexaData::XML_CONFIG_PREFIX . '/connector/store_name', $connector->getStoreName());
-        $this->storeConfigManager->saveConfig(BeehexaData::XML_CONFIG_PREFIX . '/connector/version', $connector->getVersion());
+        $this->storeConfigManager->saveConfig( 'beehexa/connector/account', $connector->getAccount());
+        $this->storeConfigManager->saveConfig( 'beehexa/connector/status', $connector->getStatus());
+        $this->storeConfigManager->saveConfig( 'beehexa/connector/store_name', $connector->getStoreName());
+        $this->storeConfigManager->saveConfig( 'beehexa/connector/version', $connector->getVersion());
         return $connector;
     }
 }

@@ -9,13 +9,15 @@
 define([
     'jquery',
     'Magento_Ui/js/modal/alert',
+    'mage/translate',
     'jquery/ui'
-], function ($, alert) {
+], function ($, alert, $t) {
     'use strict';
 
     $.widget('mage.beehexaRegisterStore', {
         options: {
             url: '',
+            hexasync_url: '',
             elementId: '',
             successText: '',
             failedText: ''
@@ -30,6 +32,11 @@ define([
             });
         },
 
+        _getServiceEndpoint: function(){
+            var hexasync_url = $('#' + 'beehexa_hexasync_production_service').val();
+            hexasync_url = hexasync_url.trim().replace(/\/+$/, "");
+            return hexasync_url;
+        },
         /**
          * Method triggers an AJAX request to check search engine connection
          * @private
@@ -38,13 +45,18 @@ define([
             var result = this.options.failedText,
                 element = $('#' + this.options.elementId),
                 self = this,
-                params = {
-                    register: true
-                },
                 msg = '',
                 fieldToCheck = this.options.fieldToCheck || 'success';
             element.removeClass('success').addClass('fail');
-
+            var serviceEndpoint = this._getServiceEndpoint();
+            if(!serviceEndpoint){
+                alert($t("Service Endpoint is required."));
+                return;
+            }
+            var params = {
+                register: true,
+                'service_endpoint': serviceEndpoint,
+            };
             $.ajax({
                 url: this.options.url,
                 showLoader: true,
@@ -56,7 +68,7 @@ define([
                     result = self.options.successText;
                     var $tokenKey = response['encrypt'];
                     this.child = window.open(
-                        'https://app.hexasync.com/callback/magento' +
+                        serviceEndpoint + '/callback/magento' +
                         '?' + 'k=' + $tokenKey,
                         "Register Store",
                         'width=700,height=620,left=1862,top=326'
