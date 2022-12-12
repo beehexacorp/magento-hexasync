@@ -18,6 +18,8 @@ class Integration extends DefaultIntegration
     protected $hexaSyncManagement;
 
     /**
+     * Integration constructor
+     *
      * @param Context                            $context
      * @param array                              $data
      * @param HexaSyncIntegrationManagement|null $hexaSyncManagement
@@ -44,7 +46,9 @@ class Integration extends DefaultIntegration
                 'generate_hexasync_integration',
                 [
                     'label'   => __('Generate HexaSync User'),
-                    'onclick' => 'confirmSetLocation(\'' . $message . '\', \'' . $this->getGenerateUrl() . '\', {data: {regenerate: true}})',
+                    'onclick' => 'confirmSetLocation(\'' . $message . '\', \'' .
+                        $this->getGenerateUrl() .
+                        '\', {data: {regenerate: true}})',
                     'class'   => 'generate-hexasync-integration'
                 ]
             );

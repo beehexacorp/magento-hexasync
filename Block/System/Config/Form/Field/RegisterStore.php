@@ -13,8 +13,17 @@ use \Magento\Store\Model\ScopeInterface;
 
 class RegisterStore extends \Magento\Config\Block\System\Config\Form\Field
 {
+    /**
+     * @var HexaSyncData
+     */
     protected $_hexasyncHelper;
 
+    /**
+     * @param Context                 $context
+     * @param HexaSyncData            $hexasyncHelper
+     * @param array                   $data
+     * @param SecureHtmlRenderer|null $secureRenderer
+     */
     public function __construct(
         Context             $context,
         HexaSyncData        $hexasyncHelper,

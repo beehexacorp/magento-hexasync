@@ -36,56 +36,46 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
      * @var StoreManagerInterface
      */
     protected $storeManager;
-
-    /**
-     * @var SystemConfig
-     */
-    private $systemConfig;
-
-    /**
-     * @var ConfigInterface
-     */
-    private $storeConfigManager;
-
-    /**
-     * @var IntegrationServiceInterface
-     */
-    private $integrationService;
-
-    /**
-     * @var EventManager
-     */
-    private $eventManager;
-
     /**
      * @var HexaSyncIntegrationDataInterfaceFactory
      */
     protected $hexaSyncIntegrationDataInterfaceFactory;
-
     /**
      * @var HexaSyncInfoDataInterfaceFactory
      */
     protected $hexaSyncInfoDataInterfaceFactory;
-
     /**
      * @var UrlInterface
      */
     protected $backendUrl;
-
     /**
      * @var EncryptorInterface
      */
     protected $encryptor;
-
     /**
      * @var OauthServiceInterface
      */
     protected $oauthService;
-
     /**
      * @var \Beehexa\HexaSync\Helper\RegisterInformation
      */
     protected $registerHelper;
+    /**
+     * @var SystemConfig
+     */
+    private $systemConfig;
+    /**
+     * @var ConfigInterface
+     */
+    private $configManager;
+    /**
+     * @var IntegrationServiceInterface
+     */
+    private $integrationService;
+    /**
+     * @var EventManager
+     */
+    private $eventManager;
 
     /**
      * IntegrationManager constructor
@@ -117,21 +107,11 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
         $this->registerHelper = $context->getRegisterHelper();
         $this->systemConfig = $systemConfig;
         $this->storeManager = $storeManager;
-        $this->storeConfigManager = $configManager;
+        $this->configManager = $configManager;
         $this->eventManager = $eventManager;
         $this->backendUrl = $backendUrl;
         $this->encryptor = $encryptor;
         $this->oauthService = $oauthService;
-    }
-
-    /**
-     * Getter for admin URL
-     *
-     * @return string
-     */
-    public function getAdminUrl()
-    {
-        return $this->backendUrl->getRouteUrl();
     }
 
     /**
@@ -155,22 +135,6 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     }
 
     /**
-     * @inheritDoc
-     */
-    private function _generateIntegration()
-    {
-        $integration = $this->getIntegration();
-        if (!$integration->getId()) {
-            $integrationName = $this->systemConfig->getConfigDataValue('hexasync/integration_name');
-            $integrationData = $this->getIntegrationData($integrationName);
-            $this->eventManager->dispatch($this->_eventPrefix . '_generate_before', ['integration_data' => $integrationData]);
-            $integration = $this->integrationService->create($integrationData);
-            $this->eventManager->dispatch($this->_eventPrefix . '_generate_after', ['integration' => $integration]);
-        }
-        return $integration;
-    }
-
-    /**
      * Getter for integration
      *
      * @return Integration
@@ -178,14 +142,33 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     public function getIntegration()
     {
         $integrationName = $this->systemConfig->getConfigDataValue('hexasync/integration_name');
-        $integration = $this->integrationService->findByName($integrationName);
-        return $integration;
+        return $this->integrationService->findByName($integrationName);
+    }
+
+    /**
+     * Returns default attributes for MA integration user
+     *
+     * @param string $integrationName
+     * @param int    $status
+     * @return array
+     */
+    private function getIntegrationData($integrationName, $status = Integration::STATUS_INACTIVE)
+    {
+        return [
+            'name'          => $integrationName,
+            'status'        => $status,
+            'all_resources' => true,
+            // Remove this because credential will be published to Hexasync by http request.
+            //            'endpoint'          => 'https://app.hexasync.com/callback/magento',
+            //            'identity_link_url' => 'https://app.hexasync.com/callback/magento',
+            'resource'      => [],
+        ];
     }
 
     /**
      * Register Integration
      *
-     * @param int $integrationId
+     * @param int         $integrationId
      * @param string|null $storeCode
      * @return HexaSyncIntegrationDataInterface
      * @throws NoSuchEntityException
@@ -202,7 +185,7 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
         }
         //Reload integration for getting consumer and access
         $integration = $this->integrationService->get($integrationId);
-        $hexaSyncData = $this->hexaSyncIntegrationDataInterfaceFactory->create(['data' => [
+        return $this->hexaSyncIntegrationDataInterfaceFactory->create(['data' => [
             'access_token'        => $integration->getData('token'),
             'access_token_secret' => $integration->getData('token_secret'),
             'consumer_key'        => $integration->getData('consumer_key'),
@@ -211,7 +194,16 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
             'store_name'          => $storeName,
             'store_code'          => $storeCode,
         ]]);
-        return $hexaSyncData;
+    }
+
+    /**
+     * Getter for admin URL
+     *
+     * @return string
+     */
+    public function getAdminUrl()
+    {
+        return $this->backendUrl->getRouteUrl();
     }
 
     /**
@@ -244,40 +236,18 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     }
 
     /**
-     * Returns default attributes for MA integration user
-     *
-     * @param string $integrationName
-     * @param int    $status
-     * @return array
-     */
-    private function getIntegrationData($integrationName, $status = Integration::STATUS_INACTIVE)
-    {
-        $integrationData = [
-            'name'          => $integrationName,
-            'status'        => $status,
-            'all_resources' => true,
-            // Remove this because credential will be published to Hexasync by http request.
-            //            'endpoint'          => 'https://app.hexasync.com/callback/magento',
-            //            'identity_link_url' => 'https://app.hexasync.com/callback/magento',
-            'resource'      => [],
-        ];
-        return $integrationData;
-    }
-
-    /**
      * @inheritDoc
      */
     public function getByName($name): HexaSyncIntegrationDataInterface
     {
         $integration = $this->integrationService->findByName($name);
         //Implement later.
-        $hexaSyncData = $this->hexaSyncIntegrationDataInterfaceFactory->create(['data' => [
+        return $this->hexaSyncIntegrationDataInterfaceFactory->create(['data' => [
             'access_token'        => $integration->getData('access_token'),
             'access_token_secret' => $integration->getData('access_token_secret'),
             'consumer_key'        => $integration->getData('consumer_key'),
             'consumer_secret'     => $integration->getData('consumer_secret')]
         ]);
-        return $hexaSyncData;
     }
 
     /**
@@ -294,15 +264,39 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     }
 
     /**
+     * Generate Integration
+     *
+     * @return Integration
+     * @throws \Magento\Framework\Exception\IntegrationException
+     */
+    private function _generateIntegration()
+    {
+        $integration = $this->getIntegration();
+        if (!$integration->getId()) {
+            $integrationName = $this->systemConfig->getConfigDataValue('hexasync/integration_name');
+            $integrationData = $this->getIntegrationData($integrationName);
+            $this->eventManager->dispatch($this->_eventPrefix . '_generate_before', [
+                'integration_data' => $integrationData]);
+            $integration = $this->integrationService->create($integrationData);
+            $this->eventManager->dispatch($this->_eventPrefix . '_generate_after', [
+                'integration' => $integration]);
+        }
+        return $integration;
+    }
+
+    /**
      * @inheritDoc
      */
     public function saveConnectorInfo(HexaSyncInfoDataInterface $connector): HexaSyncInfoDataInterface
     {
         $store = $this->storeManager->getStore($connector->getStoreCode());
-        $this->storeConfigManager->saveConfig( 'beehexa/connector/account', $connector->getAccount(),ScopeInterface::SCOPE_STORE , $store->getId());
-        $this->storeConfigManager->saveConfig( 'beehexa/connector/status', $connector->getStatus(),ScopeInterface::SCOPE_STORE , $store->getId());
-        $this->storeConfigManager->saveConfig( 'beehexa/connector/store_name', $connector->getStoreName(),ScopeInterface::SCOPE_STORE , $store->getId());
-        $this->storeConfigManager->saveConfig( 'beehexa/connector/version', $connector->getVersion(), ScopeInterface::SCOPE_STORE , $store->getId());
+        $scopeCode = ScopeInterface::SCOPE_STORE;
+        $storeId = $store->getId();
+        $prefix = 'beehexa/connector/';
+        $this->configManager->saveConfig($prefix . 'account', $connector->getAccount(), $scopeCode, $storeId);
+        $this->configManager->saveConfig($prefix . 'status', $connector->getStatus(), $scopeCode, $storeId);
+        $this->configManager->saveConfig($prefix . 'store_name', $connector->getStoreName(), $scopeCode, $storeId);
+        $this->configManager->saveConfig($prefix . 'version', $connector->getVersion(), $scopeCode, $storeId);
         return $connector;
     }
 

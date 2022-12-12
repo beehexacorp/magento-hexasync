@@ -9,7 +9,6 @@ namespace Beehexa\HexaSync\Controller\Adminhtml\Integration;
 use Beehexa\HexaSync\Api\HexaSyncIntegrationInterface;
 use Magento\Backend\App\Action as BackendAction;
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Filter\StripTags;

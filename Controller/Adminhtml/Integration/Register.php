@@ -38,6 +38,8 @@ class Register extends BackendAction
     protected $groupRepository;
 
     /**
+     * Register constructor
+     *
      * @param Context                      $context
      * @param StoreManagerInterface        $storeManager
      * @param GroupRepository              $groupRepository
@@ -86,7 +88,8 @@ class Register extends BackendAction
                         throw new \LogicException("Activation failed, please try again on System -> Integration");
                     }
                 } else {
-                    throw new \LogicException("Can not generate access token, please try again on System -> Integration");
+                    throw new \LogicException("Can not generate access token".
+                        ", please try again on System -> Integration");
                 }
             }
             $hexaSyncData = $this->hexaSyncManagement->register($integration->getId(), $storeId);

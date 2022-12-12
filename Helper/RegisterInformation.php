@@ -11,8 +11,10 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 class RegisterInformation extends Data
 {
     /**
-     * @param $scopeType
-     * @param $scopeCode
+     * Getting account from config
+     *
+     * @param string $scopeType
+     * @param ?string $scopeCode
      * @return ?string
      */
     public function getAccount($scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null): ?string
@@ -21,8 +23,10 @@ class RegisterInformation extends Data
     }
 
     /**
-     * @param $scopeType
-     * @param $scopeCode
+     * Getting status from config
+     *
+     * @param string $scopeType
+     * @param ?string $scopeCode
      * @return ?string
      */
     public function getStatus($scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null): ?string
@@ -31,8 +35,10 @@ class RegisterInformation extends Data
     }
 
     /**
-     * @param $scopeType
-     * @param $scopeCode
+     * Getting store name from config
+     *
+     * @param string $scopeType
+     * @param ?string $scopeCode
      * @return ?string
      */
     public function getStoreName($scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null): ?string
@@ -41,8 +47,10 @@ class RegisterInformation extends Data
     }
 
     /**
-     * @param $scopeType
-     * @param $scopeCode
+     * Getting API version from config
+     *
+     * @param string $scopeType
+     * @param ?string $scopeCode
      * @return ?string
      */
     public function getAPIVersion($scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null): ?string

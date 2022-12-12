@@ -22,9 +22,12 @@ interface HexaSyncIntegrationInterface
      * @param \Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface $connector
      * @return \Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface
      */
-    public function saveConnectorInfo(\Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface $connector): \Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface;
+    public function saveConnectorInfo(\Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface $connector):
+            \Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface;
 
     /**
+     * Getting Connector information
+     *
      * @param ?string $storeId
      * @return Data\HexaSyncInfoDataInterface
      */

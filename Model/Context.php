@@ -34,14 +34,16 @@ class Context
     protected $hexaSyncInfoDataInterfaceFactory;
 
     /**
+     * Context constructor
+     *
      * @param BeehexaData                             $beehexaHelper
-     * @param RegisterInformation                             $registerInformation
+     * @param RegisterInformation                     $registerInformation
      * @param HexaSyncInfoDataInterfaceFactory        $hexaSyncInfoDataInterfaceFactory
      * @param HexaSyncIntegrationDataInterfaceFactory $hexaSyncIntegrationDataInterfaceFactory
      */
     public function __construct(
         BeehexaData                             $beehexaHelper,
-        RegisterInformation                             $registerInformation,
+        RegisterInformation                     $registerInformation,
         HexaSyncInfoDataInterfaceFactory        $hexaSyncInfoDataInterfaceFactory,
         HexaSyncIntegrationDataInterfaceFactory $hexaSyncIntegrationDataInterfaceFactory
     ) {
@@ -56,7 +58,8 @@ class Context
      *
      * @return \Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterfaceFactory
      */
-    public function getHexaSyncIntegrationDataInterfaceFactory(): \Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterfaceFactory
+    public function getHexaSyncIntegrationDataInterfaceFactory():
+    \Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterfaceFactory
     {
         return $this->hexaSyncIntegrationDataInterfaceFactory;
     }

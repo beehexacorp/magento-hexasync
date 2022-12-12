@@ -14,10 +14,20 @@ class RegisteredInformation extends \Magento\Config\Block\System\Config\Form\Fie
 {
 
     /**
+     *
      * @var HexaSyncIntegrationManagement
      */
     protected $hexaSyncIntegrationManagement;
 
+    /**
+     *
+     * RegisteredInformation constructor
+     *
+     * @param Context                       $context
+     * @param HexaSyncIntegrationManagement $hexaSyncIntegrationManagement
+     * @param array                         $data
+     * @param SecureHtmlRenderer|null       $secureRenderer
+     */
     public function __construct(
         Context                       $context,
         HexaSyncIntegrationManagement $hexaSyncIntegrationManagement,
@@ -28,24 +38,35 @@ class RegisteredInformation extends \Magento\Config\Block\System\Config\Form\Fie
         $this->hexaSyncIntegrationManagement = $hexaSyncIntegrationManagement;
     }
 
-    protected function getCurrentStore(){
-        $storeId = $this->getRequest()->getParam('store', true);
-        $store = $this->_storeManager->getStore($storeId);
-        return $store;
-    }
-
+    /**
+     * @inheritDoc
+     */
     public function _getElementHtml($element)
     {
-        $registeredInfo = $this->hexaSyncIntegrationManagement->getConnectorInfo($this->getCurrentStore()->getId());
-        $html = sprintf("<div><strong>Current Store: </strong>%s</div>",  $this->getCurrentStore()->getName());
-        if($registeredInfo->getAccount()) {
-            $html .= sprintf("<div><span><strong>Account:</strong> %s</span></div>", $registeredInfo->getAccount());
-            $html .= sprintf("<div><span><strong>Registered Store Name:</strong> %s</span></div>", $registeredInfo->getStoreName());
-            $html .= sprintf("<div><span><strong>Hexasync Version:</strong> %s</span></div>", $registeredInfo->getVersion());
-            $html .= sprintf("<div><span><strong>Status:</strong> %s</span></div>", $registeredInfo->getStatus() ? "Active" : "Suspended");
+        $registerInfo = $this->hexaSyncIntegrationManagement->getConnectorInfo($this->getCurrentStore()->getId());
+        $html = sprintf("<div><strong>Current Store: </strong>%s</div>", $this->getCurrentStore()->getName());
+        if ($registerInfo->getAccount()) {
+            $status = $registerInfo->getStatus() ? "Active" : "Suspended";
+            $html .= sprintf("<div><strong>Account:</strong> %s</div>", $registerInfo->getAccount());
+            $html .= sprintf("<div><strong>Registered Store Name:</strong> %s</div>", $registerInfo->getStoreName());
+            $html .= sprintf("<div><strong>Hexasync Version:</strong> %s</div>", $registerInfo->getVersion());
+            $html .= sprintf("<div><strong>Status:</strong> %s</div>", $status);
         } else {
             $html .= "<div><span style='color: darkred'><strong>Connect your store</strong></span></div>";
         }
         return $html;
+    }
+
+    /**
+     * Getting current store.
+     *
+     * @return \Magento\Store\Api\Data\StoreInterface
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    protected function getCurrentStore()
+    {
+        $storeId = $this->getRequest()->getParam('store', true);
+        $store = $this->_storeManager->getStore($storeId);
+        return $store;
     }
 }
