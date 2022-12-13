@@ -22,10 +22,8 @@ Faster and more accurate customer management process
  
 ## Main Functionalities
  This is core modules for HexaSync's modules. 
- - Which adding Menu.
- - Configuration section.
- - Create an integration account on Magento.
- - Create a connection to HexaSync platform.
+ - The connector on the Magento application. Which add Menu and configuration section. 
+ - Support to create an integration account on Magento and a connection to HexaSync platform.
  
 ## Installation
 \* = in production please use the `--keep-generated` option
