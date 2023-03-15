@@ -29,7 +29,7 @@ interface HexaSyncIntegrationInterface
      * Getting Connector information
      *
      * @param ?string $storeId
-     * @return Data\HexaSyncInfoDataInterface
+     * @return \Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface
      */
     public function getConnectorInfo(string $storeId = null): \Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface;
 
