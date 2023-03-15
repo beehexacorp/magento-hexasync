@@ -12,4 +12,6 @@
     <preference for="Beehexa\HexaSync\Encryption\EncryptorInterface" type="Beehexa\HexaSync\Encryption\Encryptor"/>
     <preference for="Beehexa\HexaSync\Api\StoreInformationInterface"
                 type="Beehexa\HexaSync\Model\StoreInformation"/>
+    <preference for="Beehexa\HexaSync\Api\Data\StoreInformationDataInterface"
+                type="\Beehexa\HexaSync\Model\Data\StoreInformationData"/>
 </config>
