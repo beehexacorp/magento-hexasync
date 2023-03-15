@@ -10,4 +10,6 @@
     <preference for="Beehexa\HexaSync\Api\HexaSyncIntegrationInterface" type="Beehexa\HexaSync\Model\HexaSyncIntegrationManagement"/>
     <preference for="Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface" type="Beehexa\HexaSync\Model\Data\HexaSyncInfoData"/>
     <preference for="Beehexa\HexaSync\Encryption\EncryptorInterface" type="Beehexa\HexaSync\Encryption\Encryptor"/>
+    <preference for="Beehexa\HexaSync\Api\StoreInformationInterface"
+                type="Beehexa\HexaSync\Model\StoreInformation"/>
 </config>
