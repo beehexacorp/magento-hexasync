@@ -16,7 +16,8 @@ interface StoreInformationInterface
     public function getList();
 
     /**
+     * @param string $storeId
      * @return \Beehexa\HexaSync\Api\Data\StoreInformationDataInterface
      */
-    public function get($storeId);
+    public function get(string $storeId);
 }

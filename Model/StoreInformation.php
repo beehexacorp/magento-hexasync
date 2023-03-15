@@ -50,6 +50,7 @@ class StoreInformation implements \Beehexa\HexaSync\Api\StoreInformationInterfac
             $storeInformation = $this->informationDataFactory->create(['data' => $information->getData()]);
             $storeInformation->setStoreId($store->getId());
             $storeInformation->setStoreCode($store->getCode());
+            $storeInformationList[] = $storeInformation;
         }
         return $storeInformationList;
     }
@@ -61,6 +62,10 @@ class StoreInformation implements \Beehexa\HexaSync\Api\StoreInformationInterfac
     {
         $store = $this->_storeManager->getStore($storeId);
         $information = $this->storeInformation->getStoreInformationObject($store);
-        return $this->informationDataFactory->create(['data' => $information->getData()]);
+        $storeInformation = $this->informationDataFactory->create(['data' => $information->getData()]);
+
+        $storeInformation->setStoreId($store->getId());
+        $storeInformation->setStoreCode($store->getCode());
+        return $storeInformation;
     }
 }

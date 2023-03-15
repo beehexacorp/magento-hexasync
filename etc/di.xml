@@ -13,5 +13,5 @@
     <preference for="Beehexa\HexaSync\Api\StoreInformationInterface"
                 type="Beehexa\HexaSync\Model\StoreInformation"/>
     <preference for="Beehexa\HexaSync\Api\Data\StoreInformationDataInterface"
-                type="\Beehexa\HexaSync\Model\Data\StoreInformationData"/>
+                type="Beehexa\HexaSync\Model\Data\StoreInformationData"/>
 </config>
