@@ -152,5 +152,4 @@ interface StoreInformationDataInterface
      * @return \Beehexa\HexaSync\Api\Data\StoreInformationDataInterface
      */
     public function setStoreCode($storeCode);
-
 }

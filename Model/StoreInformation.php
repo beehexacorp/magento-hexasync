@@ -30,8 +30,7 @@ class StoreInformation implements \Beehexa\HexaSync\Api\StoreInformationInterfac
         StoreManagerInterface $storeManager,
         \Beehexa\HexaSync\Api\Data\StoreInformationDataInterfaceFactory $storeInformationDataInterfaceFactory,
         ?\Magento\Store\Model\Information $storeInformation = null
-    )
-    {
+    ) {
         $this->_storeManager = $storeManager;
         $this->informationDataFactory = $storeInformationDataInterfaceFactory;
         $this->storeInformation = $storeInformation ?:
@@ -45,7 +44,7 @@ class StoreInformation implements \Beehexa\HexaSync\Api\StoreInformationInterfac
     {
         $stores = $this->_storeManager->getStores();
         $storeInformationList = [];
-        foreach ($stores as $store){
+        foreach ($stores as $store) {
             $information = $this->storeInformation->getStoreInformationObject($store);
             $storeInformation = $this->informationDataFactory->create(['data' => $information->getData()]);
             $storeInformation->setStoreId($store->getId());
