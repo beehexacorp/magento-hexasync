@@ -31,7 +31,6 @@ class RegisterStore extends \Magento\Config\Block\System\Config\Form\Field
         ?SecureHtmlRenderer $secureRenderer = null
     ) {
         $this->_hexasyncHelper = $hexasyncHelper;
-        $this->_data = $data;
         parent::__construct($context, $data, $secureRenderer);
     }
 
