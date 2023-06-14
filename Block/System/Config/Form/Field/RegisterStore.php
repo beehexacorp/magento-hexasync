@@ -35,6 +35,23 @@ class RegisterStore extends \Magento\Config\Block\System\Config\Form\Field
     }
 
     /**
+     * Internal constructor, that is called from real constructor
+     *
+     * @return void
+     */
+    protected function _construct()
+    {
+        /**
+         * Please override this one instead of overriding real __construct constructor
+         */
+        parent::_construct();
+
+        if ($this->hasData('template')) {
+            $this->setData('template', 'Beehexa_HexaSync::system/config/register_store.phtml');
+        }
+    }
+
+    /**
      * Set template to itself
      *
      * @return $this
@@ -43,7 +60,6 @@ class RegisterStore extends \Magento\Config\Block\System\Config\Form\Field
     protected function _prepareLayout()
     {
         parent::_prepareLayout();
-        $this->setTemplate('Beehexa_HexaSync::system/config/register_store.phtml');
         return $this;
     }
 

@@ -6,151 +6,206 @@
 
 namespace Beehexa\HexaSync\Api\Data;
 
+/**
+ * Store interface.
+ * @api
+ * @since 102.0.0
+ */
 interface StoreInformationDataInterface
 {
-    const FIELD_NAME = 'name';
-    const FIELD_PHONE = 'phone';
-    const FIELD_HOURS = 'hours';
-    const FIELD_STREET_LINE1 = 'street_line1';
-    const FIELD_STREET_LINE2 = 'street_line2';
-    const FIELD_CITY = 'city';
-    const FIELD_POSTCODE = 'postcode';
-    const FIELD_REGION_ID = 'region_id';
-    const FIELD_COUNTRY_ID = 'country_id';
-    const FIELD_VAT_NUMBER = 'vat_number';
-    const FIELD_STORE_ID = 'store_id';
-    const FIELD_STORE_CODE = 'store_code';
+    /**#@+
+     * Constants
+     */
+    public const FIELD_NAME = 'name';
+    public const FIELD_PHONE = 'phone';
+    public const FIELD_HOURS = 'hours';
+    public const FIELD_STREET_LINE1 = 'street_line1';
+    public const FIELD_STREET_LINE2 = 'street_line2';
+    public const FIELD_CITY = 'city';
+    public const FIELD_POSTCODE = 'postcode';
+    public const FIELD_REGION_ID = 'region_id';
+    public const FIELD_COUNTRY_ID = 'country_id';
+    public const FIELD_VAT_NUMBER = 'vat_number';
+    public const FIELD_STORE_ID = 'store_id';
+    public const FIELD_STORE_CODE = 'store_code';
 
     /**
+     * Get Store Name
+     *
      * @return string
      */
     public function getName();
 
     /**
+     * Get Phone
+     *
      * @return string
      */
     public function getPhone();
 
     /**
+     * Get hours
+     *
      * @return string
      */
     public function getHours();
 
     /**
+     * Get Street Line 1
+     *
      * @return string
      */
     public function getStreetLine1();
 
     /**
+     * Get Street Line 2
+     *
      * @return string
      */
     public function getStreetLine2();
 
     /**
+     * Get City
+     *
      * @return string
      */
     public function getCity();
 
     /**
+     * Get PostCode
+     *
      * @return string
      */
     public function getPostcode();
 
     /**
+     * Get Region Id
+     *
      * @return string
      */
     public function getRegionId();
 
     /**
+     * Get CountryId
+     *
      * @return string
      */
     public function getCountryId();
 
     /**
+     * Get Vat Number
+     *
      * @return string
      */
     public function getVatNumber();
 
     /**
+     * Get StoreId
+     *
      * @return string
      */
     public function getStoreId();
 
     /**
+     * Get Store Code
+     *
      * @return string
      */
     public function getStoreCode();
 
     /**
-     * @param $name
+     * Set Store Name
+     *
+     * @param string $name
      * @return \Beehexa\HexaSync\Api\Data\StoreInformationDataInterface
      */
     public function setName($name);
 
     /**
-     * @param $phone
+     * Set Phone
+     *
+     * @param int $phone
      * @return \Beehexa\HexaSync\Api\Data\StoreInformationDataInterface
      */
     public function setPhone($phone);
 
     /**
-     * @param $hours
+     * Set Hours
+     *
+     * @param int $hours
      * @return \Beehexa\HexaSync\Api\Data\StoreInformationDataInterface
      */
     public function setHours($hours);
 
     /**
-     * @param $street_line1
+     * Set Street Line 1
+     *
+     * @param string $street_line1
      * @return \Beehexa\HexaSync\Api\Data\StoreInformationDataInterface
      */
     public function setStreetLine1($street_line1);
 
     /**
-     * @param $street_line2
+     * Set Street Line 2
+     *
+     * @param string $street_line2
      * @return \Beehexa\HexaSync\Api\Data\StoreInformationDataInterface
      */
     public function setStreetLine2($street_line2);
 
     /**
-     * @param $city
+     * Set City
+     *
+     * @param string $city
      * @return \Beehexa\HexaSync\Api\Data\StoreInformationDataInterface
      */
     public function setCity($city);
 
     /**
-     * @param $postcode
+     * Set PostCode
+     *
+     * @param string $postcode
      * @return \Beehexa\HexaSync\Api\Data\StoreInformationDataInterface
      */
     public function setPostcode($postcode);
 
     /**
-     * @param $region_id
+     * Set RegionId
+     *
+     * @param string $region_id
      * @return \Beehexa\HexaSync\Api\Data\StoreInformationDataInterface
      */
     public function setRegionId($region_id);
 
     /**
-     * @param $country_id
+     * Set CountryId
+     *
+     * @param string $country_id
      * @return \Beehexa\HexaSync\Api\Data\StoreInformationDataInterface
      */
     public function setCountryId($country_id);
 
     /**
-     * @param $vat_number
+     * Set Vat Number
+     *
+     * @param string $vat_number
      * @return \Beehexa\HexaSync\Api\Data\StoreInformationDataInterface
      */
     public function setVatNumber($vat_number);
 
     /**
-     * @param $storeId
+     * Set StoreId
+     *
+     * @param int $storeId
      * @return \Beehexa\HexaSync\Api\Data\StoreInformationDataInterface
      */
     public function setStoreId($storeId);
 
     /**
-     * @param $storeCode
+     * Set Store Code
+     *
+     * @param int $storeCode
      * @return \Beehexa\HexaSync\Api\Data\StoreInformationDataInterface
      */
     public function setStoreCode($storeCode);
-
 }
