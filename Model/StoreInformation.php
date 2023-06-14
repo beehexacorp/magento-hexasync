@@ -26,6 +26,11 @@ class StoreInformation implements \Beehexa\HexaSync\Api\StoreInformationInterfac
      */
     protected $informationDataFactory;
 
+    /**
+     * @param StoreManagerInterface $storeManager
+     * @param \Beehexa\HexaSync\Api\Data\StoreInformationDataInterfaceFactory $storeInformationDataInterfaceFactory
+     * @param \Magento\Store\Model\Information|null $storeInformation
+     */
     public function __construct(
         StoreManagerInterface $storeManager,
         \Beehexa\HexaSync\Api\Data\StoreInformationDataInterfaceFactory $storeInformationDataInterfaceFactory,

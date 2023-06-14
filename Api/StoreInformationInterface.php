@@ -11,11 +11,15 @@ use \Beehexa\HexaSync\Api\Data\StoreInformationDataInterface;
 interface StoreInformationInterface
 {
     /**
+     * Retrieve the list of stores.
+     *
      * @return \Beehexa\HexaSync\Api\Data\StoreInformationDataInterface[]
      */
     public function getList();
 
     /**
+     * Return store information by id.
+     *
      * @param string $storeId
      * @return \Beehexa\HexaSync\Api\Data\StoreInformationDataInterface
      */

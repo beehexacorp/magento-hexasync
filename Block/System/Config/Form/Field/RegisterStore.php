@@ -47,7 +47,7 @@ class RegisterStore extends \Magento\Config\Block\System\Config\Form\Field
         parent::_construct();
 
         if ($this->hasData('template')) {
-            $this->setData('template','Beehexa_HexaSync::system/config/register_store.phtml');
+            $this->setData('template', 'Beehexa_HexaSync::system/config/register_store.phtml');
         }
     }
 
