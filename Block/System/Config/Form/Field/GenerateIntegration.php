@@ -6,22 +6,24 @@
 
 namespace Beehexa\HexaSync\Block\System\Config\Form\Field;
 
-use Magento\Backend\Block\Template\Context;
-use Magento\Framework\View\Helper\SecureHtmlRenderer;
 use Beehexa\HexaSync\Model\HexaSyncIntegrationManagement;
+use Magento\Backend\Block\Template\Context;
+use Magento\Config\Block\System\Config\Form\Field;
+use Magento\Framework\Data\Form\Element\AbstractElement;
+use Magento\Framework\View\Helper\SecureHtmlRenderer;
 
-class GenerateIntegration extends \Magento\Config\Block\System\Config\Form\Field
+class GenerateIntegration extends Field
 {
     /**
      * @var HexaSyncIntegrationManagement
      */
-    protected $integrationManager;
+    protected HexaSyncIntegrationManagement $integrationManager;
 
     /**
-     * @param Context                       $context
+     * @param Context $context
      * @param HexaSyncIntegrationManagement $integrationManager
-     * @param array                         $data
-     * @param SecureHtmlRenderer|null       $secureRenderer
+     * @param array $data
+     * @param SecureHtmlRenderer|null $secureRenderer
      */
     public function __construct(
         Context                       $context,
@@ -36,7 +38,7 @@ class GenerateIntegration extends \Magento\Config\Block\System\Config\Form\Field
     /**
      * @inheritDoc
      */
-    protected function _prepareLayout()
+    protected function _prepareLayout(): \Magento\Framework\Data\Form\Element\Renderer\RendererInterface
     {
         parent::_prepareLayout();
         $this->setTemplate('Beehexa_HexaSync::system/config/generate_integration.phtml');
@@ -46,16 +48,16 @@ class GenerateIntegration extends \Magento\Config\Block\System\Config\Form\Field
     /**
      * @inheritDoc
      */
-    protected function _getElementHtml(\Magento\Framework\Data\Form\Element\AbstractElement $element)
+    protected function _getElementHtml(AbstractElement $element): string
     {
         $integration = $this->integrationManager->getIntegration();
         $originalData = $element->getOriginalData();
         $this->addData(
             [
                 'button_label' => __($originalData['button_label']),
-                'html_id'      => $element->getHtmlId(),
-                'ajax_url'     => $this->_urlBuilder->getUrl('hexasync/integration/regenerate'),
-                'disabled'     => !!$integration->getId()
+                'html_id' => $element->getHtmlId(),
+                'ajax_url' => $this->_urlBuilder->getUrl('hexasync/integration/regenerate'),
+                'disabled' => !!$integration->getId()
             ]
         );
         return $this->_toHtml();

@@ -6,10 +6,13 @@
 
 namespace Beehexa\HexaSync\Model;
 
+use Beehexa\HexaSync\Api\Data\StoreInformationDataInterfaceFactory;
+use Beehexa\HexaSync\Api\StoreInformationInterface;
 use Magento\Framework\App\ObjectManager;
+use Magento\Store\Model\Information;
 use Magento\Store\Model\StoreManagerInterface;
 
-class StoreInformation implements \Beehexa\HexaSync\Api\StoreInformationInterface
+class StoreInformation implements StoreInformationInterface
 {
     /**
      * @var StoreManagerInterface
@@ -17,48 +20,30 @@ class StoreInformation implements \Beehexa\HexaSync\Api\StoreInformationInterfac
     protected $_storeManager;
 
     /**
-     * @var \Magento\Store\Model\Information|mixed
+     * @var Information|mixed
      */
     protected $storeInformation;
 
     /**
-     * @var \Beehexa\HexaSync\Api\Data\StoreInformationDataInterfaceFactory
+     * @var StoreInformationDataInterfaceFactory
      */
     protected $informationDataFactory;
 
     public function __construct(
-        StoreManagerInterface $storeManager,
-        \Beehexa\HexaSync\Api\Data\StoreInformationDataInterfaceFactory $storeInformationDataInterfaceFactory,
-        ?\Magento\Store\Model\Information $storeInformation = null
-    )
-    {
+        StoreManagerInterface                                           $storeManager,
+        StoreInformationDataInterfaceFactory $storeInformationDataInterfaceFactory,
+        ?Information $storeInformation = null
+    ) {
         $this->_storeManager = $storeManager;
         $this->informationDataFactory = $storeInformationDataInterfaceFactory;
         $this->storeInformation = $storeInformation ?:
-            ObjectManager::getInstance()->get(\Magento\Store\Model\Information::class);
+            ObjectManager::getInstance()->get(Information::class);
     }
 
     /**
      * @inheritDoc
      */
-    public function getList()
-    {
-        $stores = $this->_storeManager->getStores();
-        $storeInformationList = [];
-        foreach ($stores as $store){
-            $information = $this->storeInformation->getStoreInformationObject($store);
-            $storeInformation = $this->informationDataFactory->create(['data' => $information->getData()]);
-            $storeInformation->setStoreId($store->getId());
-            $storeInformation->setStoreCode($store->getCode());
-            $storeInformationList[] = $storeInformation;
-        }
-        return $storeInformationList;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function get($storeId)
+    public function get($storeId): \Beehexa\HexaSync\Api\Data\StoreInformationDataInterface
     {
         $store = $this->_storeManager->getStore($storeId);
         $information = $this->storeInformation->getStoreInformationObject($store);
@@ -67,5 +52,22 @@ class StoreInformation implements \Beehexa\HexaSync\Api\StoreInformationInterfac
         $storeInformation->setStoreId($store->getId());
         $storeInformation->setStoreCode($store->getCode());
         return $storeInformation;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getList(): array
+    {
+        $stores = $this->_storeManager->getStores();
+        $storeInformationList = [];
+        foreach ($stores as $store) {
+            $information = $this->storeInformation->getStoreInformationObject($store);
+            $storeInformation = $this->informationDataFactory->create(['data' => $information->getData()]);
+            $storeInformation->setStoreId($store->getId());
+            $storeInformation->setStoreCode($store->getCode());
+            $storeInformationList[] = $storeInformation;
+        }
+        return $storeInformationList;
     }
 }

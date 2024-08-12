@@ -4,13 +4,19 @@
  * See COPYING.txt for license details.
  */
 /**
- * @var $block \Beehexa\HexaSync\Block\System\Config\Form\Field\RegisterStore
+ *
+ * @var $escaper Escaper
+ * @var $block RegisterStore
  */
+
+use Beehexa\HexaSync\Block\System\Config\Form\Field\RegisterStore;
+use Magento\Framework\Escaper;
+
 ?>
 <button class="scalable" type="button" id="<?= $block->getHtmlId() ?>" data-mage-init='{"beehexaRegisterStore":{
-    "url": "<?= $block->escapeUrl($block->getAjaxUrl()) ?>",
+    "url": "<?= $escaper->escapeUrl($block->getAjaxUrl()) ?>",
     "elementId": "<?= $block->getHtmlId() ?>",
-    "successText": "<?= $block->escapeHtmlAttr(__('Successful!!!')) ?>",
-    "failedText": "<?= $block->escapeHtmlAttr(__('Connection failed! Try again?')) ?>"}}'>
-    <span id="<?= $block->getHtmlId() ?>_result"><?= $block->escapeHtml($block->getButtonLabel()) ?></span>
+    "successText": "<?= $escaper->escapeHtmlAttr(__('Successful!!!')) ?>",
+    "failedText": "<?= $escaper->escapeHtmlAttr(__('Connection failed! Try again?')) ?>"}}'>
+    <span id="<?= $block->getHtmlId() ?>_result"><?= $escaper->escapeHtml($block->getButtonLabel()) ?></span>
 </button>

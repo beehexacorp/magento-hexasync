@@ -11,15 +11,15 @@ interface HexaSyncInfoDataInterface
     /**
      * String constants for property names
      */
-    public const ACCOUNT    = "account";
+    public const string ACCOUNT = "account";
 
-    public const STATUS     = "status";
+    public const string STATUS = "status";
 
-    public const STORE_NAME = "store_name";
+    public const string STORE_NAME = "store_name";
 
-    public const STORE_CODE = "store_code";
+    public const string STORE_CODE = "store_code";
 
-    public const VERSION    = "version";
+    public const string VERSION = "version";
 
     /**
      * Getter for Account.

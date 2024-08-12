@@ -7,8 +7,11 @@
 namespace Beehexa\HexaSync\Controller\Adminhtml\Integration;
 
 use Beehexa\HexaSync\Api\HexaSyncIntegrationInterface;
+use Exception;
 use Magento\Backend\App\Action as BackendAction;
 use Magento\Backend\App\Action\Context;
+use Magento\Backend\Model\View\Result\Redirect;
+use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Filter\StripTags;
@@ -18,22 +21,22 @@ class Regenerate extends BackendAction
     /**
      * Authorization level of a basic admin session
      */
-    public const ADMIN_RESOURCE = 'Magento_Integration::integrations';
+    public const string ADMIN_RESOURCE = 'Magento_Integration::integrations';
 
     /**
      * @var HexaSyncIntegrationInterface
      */
-    protected $hexaSyncManagement;
+    protected HexaSyncIntegrationInterface $hexaSyncManagement;
 
     /**
      * @var StripTags
      */
-    protected $stripTags;
+    protected StripTags $stripTags;
 
     /**
-     * @param Context                      $context
+     * @param Context $context
      * @param HexaSyncIntegrationInterface $hexaSyncManagement
-     * @param StripTags                    $stripTags
+     * @param StripTags $stripTags
      */
     public function __construct(
         Context                      $context,
@@ -52,7 +55,7 @@ class Regenerate extends BackendAction
     {
         if ($this->getRequest()->isAjax()) {
             $result = [
-                'success'      => false,
+                'success' => false,
                 'errorMessage' => '',
             ];
             try {
@@ -60,23 +63,23 @@ class Regenerate extends BackendAction
                 $result['success'] = true;
             } catch (AlreadyExistsException $e) {
                 $result['errorMessage'] = $e->getMessage();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $message = __($e->getMessage());
                 $result['errorMessage'] = $this->stripTags->filter($message);
             }
 
-            /** @var \Magento\Framework\Controller\Result\Json $resultJson */
+            /** @var Json $resultJson */
             $resultJson = $this->resultFactory->create(ResultFactory::TYPE_JSON);
             return $resultJson->setData($result);
         } else {
             try {
                 $this->hexaSyncManagement->generateIntegration();
                 $this->messageManager->addSuccessMessage(__("The account was generated successfully."));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->messageManager->addErrorMessage(__($e->getMessage()));
             }
 
-            /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
+            /** @var Redirect $resultRedirect */
             $resultRedirect = $this->resultRedirectFactory->create();
             return $resultRedirect->setPath('adminhtml/integration');
         }

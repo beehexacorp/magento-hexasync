@@ -6,15 +6,16 @@
 
 namespace Beehexa\HexaSync\Model\Data;
 
+use Beehexa\HexaSync\Api\Data\StoreInformationDataInterface;
 use Magento\Framework\DataObject;
 
-class StoreInformationData extends DataObject implements \Beehexa\HexaSync\Api\Data\StoreInformationDataInterface
+class StoreInformationData extends DataObject implements StoreInformationDataInterface
 {
 
     /**
      * @inheritDoc
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->getData(self::FIELD_NAME);
     }
@@ -22,7 +23,7 @@ class StoreInformationData extends DataObject implements \Beehexa\HexaSync\Api\D
     /**
      * @inheritDoc
      */
-    public function getPhone()
+    public function getPhone(): ?string
     {
         return $this->getData(self::FIELD_PHONE);
     }
@@ -30,7 +31,7 @@ class StoreInformationData extends DataObject implements \Beehexa\HexaSync\Api\D
     /**
      * @inheritDoc
      */
-    public function getHours()
+    public function getHours(): ?string
     {
         return $this->getData(self::FIELD_HOURS);
     }
@@ -38,7 +39,7 @@ class StoreInformationData extends DataObject implements \Beehexa\HexaSync\Api\D
     /**
      * @inheritDoc
      */
-    public function getStreetLine1()
+    public function getStreetLine1(): ?string
     {
         return $this->getData(self::FIELD_STREET_LINE1);
     }
@@ -46,7 +47,7 @@ class StoreInformationData extends DataObject implements \Beehexa\HexaSync\Api\D
     /**
      * @inheritDoc
      */
-    public function getStreetLine2()
+    public function getStreetLine2(): ?string
     {
         return $this->getData(self::FIELD_STREET_LINE2);
     }
@@ -54,7 +55,7 @@ class StoreInformationData extends DataObject implements \Beehexa\HexaSync\Api\D
     /**
      * @inheritDoc
      */
-    public function getCity()
+    public function getCity(): ?string
     {
         return $this->getData(self::FIELD_CITY);
     }
@@ -62,7 +63,7 @@ class StoreInformationData extends DataObject implements \Beehexa\HexaSync\Api\D
     /**
      * @inheritDoc
      */
-    public function getPostcode()
+    public function getPostcode(): ?string
     {
         return $this->getData(self::FIELD_POSTCODE);
     }
@@ -70,7 +71,7 @@ class StoreInformationData extends DataObject implements \Beehexa\HexaSync\Api\D
     /**
      * @inheritDoc
      */
-    public function getRegionId()
+    public function getRegionId(): ?string
     {
         return $this->getData(self::FIELD_REGION_ID);
     }
@@ -78,7 +79,7 @@ class StoreInformationData extends DataObject implements \Beehexa\HexaSync\Api\D
     /**
      * @inheritDoc
      */
-    public function getCountryId()
+    public function getCountryId(): ?string
     {
         return $this->getData(self::FIELD_COUNTRY_ID);
     }
@@ -86,7 +87,7 @@ class StoreInformationData extends DataObject implements \Beehexa\HexaSync\Api\D
     /**
      * @inheritDoc
      */
-    public function getVatNumber()
+    public function getVatNumber(): ?string
     {
         return $this->getData(self::FIELD_VAT_NUMBER);
     }
@@ -94,7 +95,7 @@ class StoreInformationData extends DataObject implements \Beehexa\HexaSync\Api\D
     /**
      * @inheritDoc
      */
-    public function getStoreId()
+    public function getStoreId(): ?string
     {
         return $this->getData(self::FIELD_STORE_ID);
     }
@@ -102,7 +103,7 @@ class StoreInformationData extends DataObject implements \Beehexa\HexaSync\Api\D
     /**
      * @inheritDoc
      */
-    public function getStoreCode()
+    public function getStoreCode(): ?string
     {
         return $this->getData(self::FIELD_STORE_CODE);
     }
@@ -110,15 +111,15 @@ class StoreInformationData extends DataObject implements \Beehexa\HexaSync\Api\D
     /**
      * @inheritDoc
      */
-    public function setName($name)
+    public function setName($name): StoreInformationDataInterface
     {
-        return  $this->setData(self::FIELD_NAME, $name);
+        return $this->setData(self::FIELD_NAME, $name);
     }
 
     /**
      * @inheritDoc
      */
-    public function setPhone($phone)
+    public function setPhone($phone): StoreInformationDataInterface
     {
         return $this->setData(self::FIELD_PHONE, $phone);
     }
@@ -126,7 +127,7 @@ class StoreInformationData extends DataObject implements \Beehexa\HexaSync\Api\D
     /**
      * @inheritDoc
      */
-    public function setHours($hours)
+    public function setHours($hours): StoreInformationDataInterface
     {
         return $this->setData(self::FIELD_HOURS, $hours);
     }
@@ -134,7 +135,7 @@ class StoreInformationData extends DataObject implements \Beehexa\HexaSync\Api\D
     /**
      * @inheritDoc
      */
-    public function setStreetLine1($street_line1)
+    public function setStreetLine1($street_line1): StoreInformationDataInterface
     {
         return $this->setData(self::FIELD_STREET_LINE1, $street_line1);
     }
@@ -142,7 +143,7 @@ class StoreInformationData extends DataObject implements \Beehexa\HexaSync\Api\D
     /**
      * @inheritDoc
      */
-    public function setStreetLine2($street_line2)
+    public function setStreetLine2($street_line2): StoreInformationDataInterface
     {
         return $this->setData(self::FIELD_STREET_LINE2, $street_line2);
     }
@@ -150,7 +151,7 @@ class StoreInformationData extends DataObject implements \Beehexa\HexaSync\Api\D
     /**
      * @inheritDoc
      */
-    public function setCity($city)
+    public function setCity($city): StoreInformationDataInterface
     {
         return $this->setData(self::FIELD_CITY, $city);
     }
@@ -158,7 +159,7 @@ class StoreInformationData extends DataObject implements \Beehexa\HexaSync\Api\D
     /**
      * @inheritDoc
      */
-    public function setPostcode($postcode)
+    public function setPostcode($postcode): StoreInformationDataInterface
     {
         return $this->setData(self::FIELD_POSTCODE, $postcode);
     }
@@ -166,7 +167,7 @@ class StoreInformationData extends DataObject implements \Beehexa\HexaSync\Api\D
     /**
      * @inheritDoc
      */
-    public function setRegionId($region_id)
+    public function setRegionId($region_id): StoreInformationDataInterface
     {
         return $this->setData(self::FIELD_REGION_ID, $region_id);
     }
@@ -174,7 +175,7 @@ class StoreInformationData extends DataObject implements \Beehexa\HexaSync\Api\D
     /**
      * @inheritDoc
      */
-    public function setCountryId($country_id)
+    public function setCountryId($country_id): StoreInformationDataInterface
     {
         return $this->setData(self::FIELD_COUNTRY_ID, $country_id);
     }
@@ -182,7 +183,7 @@ class StoreInformationData extends DataObject implements \Beehexa\HexaSync\Api\D
     /**
      * @inheritDoc
      */
-    public function setVatNumber($vat_number)
+    public function setVatNumber($vat_number): StoreInformationDataInterface
     {
         return $this->setData(self::FIELD_VAT_NUMBER, $vat_number);
     }
@@ -190,7 +191,7 @@ class StoreInformationData extends DataObject implements \Beehexa\HexaSync\Api\D
     /**
      * @inheritDoc
      */
-    public function setStoreId($storeId)
+    public function setStoreId($storeId): StoreInformationDataInterface
     {
         return $this->setData(self::FIELD_STORE_ID, $storeId);
     }
@@ -198,7 +199,7 @@ class StoreInformationData extends DataObject implements \Beehexa\HexaSync\Api\D
     /**
      * @inheritDoc
      */
-    public function setStoreCode($storeCode)
+    public function setStoreCode($storeCode): StoreInformationDataInterface
     {
         return $this->setData(self::FIELD_STORE_CODE, $storeCode);
     }

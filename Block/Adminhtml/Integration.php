@@ -6,27 +6,27 @@
 
 namespace Beehexa\HexaSync\Block\Adminhtml;
 
-use Magento\Integration\Block\Adminhtml\Integration as DefaultIntegration;
-use Magento\Backend\Block\Widget\Context;
 use Beehexa\HexaSync\Model\HexaSyncIntegrationManagement;
+use Magento\Backend\Block\Widget\Context;
+use Magento\Integration\Block\Adminhtml\Integration as DefaultIntegration;
 
 class Integration extends DefaultIntegration
 {
     /**
      * @var HexaSyncIntegrationManagement
      */
-    protected $hexaSyncManagement;
+    protected HexaSyncIntegrationManagement $hexaSyncManagement;
 
     /**
      * Integration constructor
      *
-     * @param Context                            $context
-     * @param array                              $data
+     * @param Context $context
+     * @param array $data
      * @param HexaSyncIntegrationManagement|null $hexaSyncManagement
      */
     public function __construct(
-        Context                       $context,
-        array                         $data = [],
+        Context                        $context,
+        array                          $data = [],
         ?HexaSyncIntegrationManagement $hexaSyncManagement = null
     ) {
         $this->hexaSyncManagement = $hexaSyncManagement;
@@ -36,7 +36,7 @@ class Integration extends DefaultIntegration
     /**
      * @inheritDoc
      */
-    protected function _construct()
+    protected function _construct(): void
     {
         parent::_construct();
 
@@ -45,11 +45,11 @@ class Integration extends DefaultIntegration
             $this->buttonList->add(
                 'generate_hexasync_integration',
                 [
-                    'label'   => __('Generate HexaSync User'),
+                    'label' => __('Generate HexaSync User'),
                     'onclick' => 'confirmSetLocation(\'' . $message . '\', \'' .
                         $this->getGenerateUrl() .
                         '\', {data: {regenerate: true}})',
-                    'class'   => 'generate-hexasync-integration'
+                    'class' => 'generate-hexasync-integration'
                 ]
             );
         }
@@ -60,7 +60,7 @@ class Integration extends DefaultIntegration
      *
      * @return string
      */
-    public function getGenerateUrl()
+    public function getGenerateUrl(): string
     {
         return $this->getUrl('hexasync/integration/regenerate');
     }

@@ -6,27 +6,30 @@
 
 namespace Beehexa\HexaSync\Block\System\Config\Form\Field;
 
-use \Beehexa\HexaSync\Model\HexaSyncIntegrationManagement;
+use Beehexa\HexaSync\Model\HexaSyncIntegrationManagement;
 use Magento\Backend\Block\Template\Context;
+use Magento\Config\Block\System\Config\Form\Field;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Helper\SecureHtmlRenderer;
+use Magento\Store\Api\Data\StoreInterface;
 
-class RegisteredInformation extends \Magento\Config\Block\System\Config\Form\Field
+class RegisteredInformation extends Field
 {
 
     /**
      *
      * @var HexaSyncIntegrationManagement
      */
-    protected $hexaSyncIntegrationManagement;
+    protected HexaSyncIntegrationManagement $hexaSyncIntegrationManagement;
 
     /**
      *
      * RegisteredInformation constructor
      *
-     * @param Context                       $context
+     * @param Context $context
      * @param HexaSyncIntegrationManagement $hexaSyncIntegrationManagement
-     * @param array                         $data
-     * @param SecureHtmlRenderer|null       $secureRenderer
+     * @param array $data
+     * @param SecureHtmlRenderer|null $secureRenderer
      */
     public function __construct(
         Context                       $context,
@@ -41,7 +44,7 @@ class RegisteredInformation extends \Magento\Config\Block\System\Config\Form\Fie
     /**
      * @inheritDoc
      */
-    public function _getElementHtml($element)
+    public function _getElementHtml($element): string
     {
         $registerInfo = $this->hexaSyncIntegrationManagement->getConnectorInfo($this->getCurrentStore()->getId());
         $html = sprintf("<div><strong>Current Store: </strong>%s</div>", $this->getCurrentStore()->getName());
@@ -60,10 +63,10 @@ class RegisteredInformation extends \Magento\Config\Block\System\Config\Form\Fie
     /**
      * Getting current store.
      *
-     * @return \Magento\Store\Api\Data\StoreInterface
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @return StoreInterface
+     * @throws NoSuchEntityException
      */
-    protected function getCurrentStore()
+    protected function getCurrentStore(): StoreInterface
     {
         $storeId = $this->getRequest()->getParam('store', true);
         $store = $this->_storeManager->getStore($storeId);

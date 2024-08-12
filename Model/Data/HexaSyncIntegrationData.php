@@ -78,7 +78,7 @@ class HexaSyncIntegrationData extends DataObject implements HexaSyncIntegrationD
     /**
      * @inheritDoc
      */
-    public function getBaseUrl()
+    public function getBaseUrl(): string
     {
         return $this->getData(self::BASE_URL);
     }
@@ -86,7 +86,7 @@ class HexaSyncIntegrationData extends DataObject implements HexaSyncIntegrationD
     /**
      * @inheritDoc
      */
-    public function setBaseUrl($baseURL)
+    public function setBaseUrl($baseURL): void
     {
         $this->setData(self::BASE_URL, $baseURL);
     }

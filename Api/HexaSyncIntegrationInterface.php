@@ -6,55 +6,61 @@
 
 namespace Beehexa\HexaSync\Api;
 
+use Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface;
+use Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterface;
+use Magento\Framework\DataObject;
+use Magento\Framework\Exception\IntegrationException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Integration\Model\Integration;
+
 interface HexaSyncIntegrationInterface
 {
     /**
      * Get Connector by Name
      *
      * @param string $name
-     * @return \Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterface
+     * @return HexaSyncIntegrationDataInterface
      */
     public function getByName(string $name): \Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterface;
 
     /**
      * Saving connector info
      *
-     * @param \Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface $connector
-     * @return \Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface
+     * @param HexaSyncInfoDataInterface $connector
+     * @return HexaSyncInfoDataInterface
      */
-    public function saveConnectorInfo(\Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface $connector):
-            \Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface;
+    public function saveConnectorInfo(\Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface $connector): \Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface;
 
     /**
      * Getting Connector information
      *
      * @param ?string $storeId
-     * @return \Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface
+     * @return HexaSyncInfoDataInterface
      */
     public function getConnectorInfo(string $storeId = null): \Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface;
 
     /**
      * Encrypting data
      *
-     * @param \Magento\Framework\DataObject $hexaSyncData
+     * @param DataObject $hexaSyncData
      * @return string
      */
-    public function encrypt(\Magento\Framework\DataObject $hexaSyncData);
+    public function encrypt(DataObject $hexaSyncData): string;
 
     /**
      * Generate integration
      *
-     * @return \Magento\Integration\Model\Integration
+     * @return Integration
      */
-    public function generateIntegration();
+    public function generateIntegration(): \Magento\Integration\Model\Integration;
 
     /**
      * Activate predefined integration user
      *
-     * @param \Magento\Integration\Model\Integration $integration
+     * @param Integration|null $integration
      * @return bool
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     * @throws \Magento\Framework\Exception\IntegrationException
+     * @throws NoSuchEntityException
+     * @throws IntegrationException
      */
-    public function activateIntegration($integration = null);
+    public function activateIntegration(?Integration $integration = null): bool;
 }

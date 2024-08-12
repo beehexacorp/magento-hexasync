@@ -37,7 +37,7 @@ define([
          */
         _connect: function () {
             var result = this.options.failedText,
-                element =  $('#' + this.options.elementId),
+                element = $('#' + this.options.elementId),
                 self = this,
                 params = {regenerate: true},
                 msg = '',

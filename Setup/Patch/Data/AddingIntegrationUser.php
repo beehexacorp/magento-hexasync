@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace Beehexa\HexaSync\Setup\Patch\Data;
 
-use \Beehexa\HexaSync\Model\HexaSyncIntegrationManagement;
+use Beehexa\HexaSync\Model\HexaSyncIntegrationManagement;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
 
@@ -20,7 +20,7 @@ class AddingIntegrationUser implements DataPatchInterface
     /**
      * @var HexaSyncIntegrationManagement
      */
-    protected $integrationManager;
+    protected HexaSyncIntegrationManagement $integrationManager;
 
     /**
      * @param HexaSyncIntegrationManagement $integrationManager
@@ -33,10 +33,18 @@ class AddingIntegrationUser implements DataPatchInterface
 
     /**
      * @inheritDoc
+     */
+    public static function getDependencies(): array
+    {
+        return [];
+    }
+
+    /**
+     * @inheritDoc
      *
      * @throws LocalizedException
      */
-    public function apply()
+    public function apply(): \Magento\Framework\Setup\Patch\PatchInterface|AddingIntegrationUser|static
     {
         $this->integrationManager->generateIntegration();
         return $this;
@@ -45,15 +53,7 @@ class AddingIntegrationUser implements DataPatchInterface
     /**
      * @inheritDoc
      */
-    public function getAliases()
-    {
-        return [];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static function getDependencies()
+    public function getAliases(): array
     {
         return [];
     }

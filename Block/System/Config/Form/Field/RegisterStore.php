@@ -6,12 +6,14 @@
 
 namespace Beehexa\HexaSync\Block\System\Config\Form\Field;
 
+use Beehexa\HexaSync\Helper\Data as HexaSyncData;
 use Magento\Backend\Block\Template\Context;
+use Magento\Config\Block\System\Config\Form\Field;
+use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\View\Helper\SecureHtmlRenderer;
-use \Beehexa\HexaSync\Helper\Data as HexaSyncData;
-use \Magento\Store\Model\ScopeInterface;
+use Magento\Store\Model\ScopeInterface;
 
-class RegisterStore extends \Magento\Config\Block\System\Config\Form\Field
+class RegisterStore extends Field
 {
     /**
      * @var HexaSyncData
@@ -19,9 +21,9 @@ class RegisterStore extends \Magento\Config\Block\System\Config\Form\Field
     protected $_hexasyncHelper;
 
     /**
-     * @param Context                 $context
-     * @param HexaSyncData            $hexasyncHelper
-     * @param array                   $data
+     * @param Context $context
+     * @param HexaSyncData $hexasyncHelper
+     * @param array $data
      * @param SecureHtmlRenderer|null $secureRenderer
      */
     public function __construct(
@@ -40,7 +42,7 @@ class RegisterStore extends \Magento\Config\Block\System\Config\Form\Field
      * @return $this
      * @since 100.1.0
      */
-    protected function _prepareLayout()
+    protected function _prepareLayout(): static
     {
         parent::_prepareLayout();
         $this->setTemplate('Beehexa_HexaSync::system/config/register_store.phtml');
@@ -50,19 +52,19 @@ class RegisterStore extends \Magento\Config\Block\System\Config\Form\Field
     /**
      * Get the button and scripts contents
      *
-     * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
+     * @param AbstractElement $element
      * @return string
      * @since 100.1.0
      */
-    protected function _getElementHtml(\Magento\Framework\Data\Form\Element\AbstractElement $element)
+    protected function _getElementHtml(AbstractElement $element): string
     {
         $originalData = $element->getOriginalData();
         $this->addData(
             [
                 'button_label' => __($originalData['button_label']),
-                'html_id'      => $element->getHtmlId(),
+                'html_id' => $element->getHtmlId(),
                 'hexasync_url' => $this->_hexasyncHelper->getServiceEndpoint(ScopeInterface::SCOPE_STORE),
-                'ajax_url'     => $this->_urlBuilder->getUrl(
+                'ajax_url' => $this->_urlBuilder->getUrl(
                     'hexasync/integration/register',
                     ['_use_rewrite' => true, '_current' => true]
                 )

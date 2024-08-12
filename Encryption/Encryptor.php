@@ -6,6 +6,8 @@
 
 namespace Beehexa\HexaSync\Encryption;
 
+use Exception;
+use LogicException;
 use Magento\Framework\Filesystem\Io\File as FileManager;
 use Magento\Framework\Module\Dir;
 use Magento\Framework\Module\Dir\Reader as ModuleDirReader;
@@ -15,35 +17,35 @@ use phpseclib3\Crypt\RSA\PublicKey;
 
 class Encryptor implements EncryptorInterface
 {
-    public const MODULE_NAME = 'Beehexa_HexaSync';
+    public const string MODULE_NAME = 'Beehexa_HexaSync';
 
     /**
      *
      * @var ModuleDirReader
      */
-    protected $moduleDirReader;
+    protected ModuleDirReader $moduleDirReader;
 
     /**
      *
      * @var PublicKey|null
      */
-    private $publicKey = null;
+    private ?PublicKey $publicKey = null;
 
     /**
      *
      * @var PrivateKey|null
      */
-    private $privateKey = null;
+    private ?PrivateKey $privateKey = null;
 
     /**
      *
      * @var FileManager
      */
-    private $fileManager;
+    private FileManager $fileManager;
 
     /**
-     * @param \Magento\Framework\Filesystem\Io\File $fileManager
-     * @param ModuleDirReader                       $moduleDirReader
+     * @param FileManager $fileManager
+     * @param ModuleDirReader $moduleDirReader
      */
     public function __construct(
         FileManager     $fileManager,
@@ -54,54 +56,59 @@ class Encryptor implements EncryptorInterface
     }
 
     /**
-     * Getter for public key path
-     *
-     * @return string
+     * @inheritDoc
      */
-    private function getPublicKeyPath()
+    public function encrypt(string $data): string
     {
-        $moduleDir = $this->moduleDirReader->getModuleDir(Dir::MODULE_ETC_DIR, self::MODULE_NAME);
-        return rtrim($moduleDir, '/') . '/' . 'team.pub';
-    }
-
-    /**
-     * Getter for private key path
-     *
-     * @return string
-     */
-    private function getPrivateKeyPath()
-    {
-        $moduleDir = $this->moduleDirReader->getModuleDir(Dir::MODULE_ETC_DIR, self::MODULE_NAME);
-        return rtrim($moduleDir, '/') . '/' . 'team';
+        $publicKey = $this->getPublicKey();
+        return $publicKey->encrypt($data);
     }
 
     /**
      * Getting public key
      *
-     * @return PublicKey
-     * @throws \Exception
+     * @return PublicKey|null
      */
-    private function getPublicKey()
+    private function getPublicKey(): ?PublicKey
     {
         if (null == $this->publicKey) {
             $keyFile = $this->getPublicKeyPath();
             if ($this->fileManager->fileExists($keyFile)) {
                 $publicKey = RSA::load($this->fileManager->read($keyFile));
-                $this->publicKey = $publicKey->withPadding(PrivateKey::ENCRYPTION_PKCS1);
+                $this->publicKey = $publicKey->withPadding(RSA::ENCRYPTION_PKCS1);
             } else {
-                throw new \LogicException("Public Key does not exists");
+                throw new LogicException("Public Key does not exists");
             }
         }
         return $this->publicKey;
     }
 
     /**
+     * Getter for public key path
+     *
+     * @return string
+     */
+    private function getPublicKeyPath(): string
+    {
+        $moduleDir = $this->moduleDirReader->getModuleDir(Dir::MODULE_ETC_DIR, self::MODULE_NAME);
+        return rtrim($moduleDir, '/') . '/' . 'team.pub';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function decrypt(string $data): string
+    {
+        $privateKey = $this->getPrivateKey();
+        return $privateKey->decrypt($data);
+    }
+
+    /**
      * Getting private key
      *
-     * @return PrivateKey
-     * @throws \Exception
+     * @return PrivateKey|null
      */
-    private function getPrivateKey()
+    private function getPrivateKey(): ?PrivateKey
     {
         if (null == $this->privateKey) {
             $keyFile = $this->getPrivateKeyPath();
@@ -109,27 +116,20 @@ class Encryptor implements EncryptorInterface
                 $privateKey = RSA::load($this->fileManager->read($keyFile));
                 $this->privateKey = $privateKey->withPadding(PrivateKey::ENCRYPTION_PKCS1);
             } else {
-                throw new \LogicException("Private Key does not exists");
+                throw new LogicException("Private Key does not exists");
             }
         }
         return $this->privateKey;
     }
 
     /**
-     * @inheritDoc
+     * Getter for private key path
+     *
+     * @return string
      */
-    public function encrypt($data)
+    private function getPrivateKeyPath(): string
     {
-        $publicKey = $this->getPublicKey();
-        return $publicKey->encrypt($data);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function decrypt($data)
-    {
-        $privateKey = $this->getPrivateKey();
-        return $privateKey->decrypt($data);
+        $moduleDir = $this->moduleDirReader->getModuleDir(Dir::MODULE_ETC_DIR, self::MODULE_NAME);
+        return rtrim($moduleDir, '/') . '/' . 'team';
     }
 }

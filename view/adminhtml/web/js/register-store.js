@@ -32,7 +32,7 @@ define([
             });
         },
 
-        _getServiceEndpoint: function(){
+        _getServiceEndpoint: function () {
             var hexasync_url = $('#' + 'beehexa_hexasync_production_service').val();
             hexasync_url = hexasync_url.trim().replace(/\/+$/, "");
             return hexasync_url;
@@ -49,7 +49,7 @@ define([
                 fieldToCheck = this.options.fieldToCheck || 'success';
             element.removeClass('success').addClass('fail');
             var serviceEndpoint = this._getServiceEndpoint();
-            if(!serviceEndpoint){
+            if (!serviceEndpoint) {
                 alert({
                     content: $t("Service Endpoint is required.")
                 });

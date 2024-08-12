@@ -6,18 +6,18 @@
 
 namespace Beehexa\HexaSync\Api;
 
-use \Beehexa\HexaSync\Api\Data\StoreInformationDataInterface;
+use Beehexa\HexaSync\Api\Data\StoreInformationDataInterface;
 
 interface StoreInformationInterface
 {
     /**
-     * @return \Beehexa\HexaSync\Api\Data\StoreInformationDataInterface[]
+     * @return StoreInformationDataInterface[]
      */
-    public function getList();
+    public function getList(): array;
 
     /**
      * @param string $storeId
-     * @return \Beehexa\HexaSync\Api\Data\StoreInformationDataInterface
+     * @return StoreInformationDataInterface
      */
-    public function get(string $storeId);
+    public function get(string $storeId): \Beehexa\HexaSync\Api\Data\StoreInformationDataInterface;
 }

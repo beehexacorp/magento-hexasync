@@ -17,7 +17,9 @@ class RegisterInformation extends Data
      * @param ?string $scopeCode
      * @return ?string
      */
-    public function getAccount($scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null): ?string
+    public function getAccount(
+        string  $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+        ?string $scopeCode = null): ?string
     {
         return $this->getConfigValue('connector/account', $scopeType, $scopeCode);
     }
@@ -29,7 +31,9 @@ class RegisterInformation extends Data
      * @param ?string $scopeCode
      * @return ?string
      */
-    public function getStatus($scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null): ?string
+    public function getStatus(
+        string  $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+        ?string $scopeCode = null): ?string
     {
         return $this->getConfigValue('connector/status', $scopeType, $scopeCode);
     }
@@ -41,7 +45,9 @@ class RegisterInformation extends Data
      * @param ?string $scopeCode
      * @return ?string
      */
-    public function getStoreName($scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null): ?string
+    public function getStoreName(
+        string  $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+        ?string $scopeCode = null): ?string
     {
         return $this->getConfigValue('connector/store_name', $scopeType, $scopeCode);
     }
@@ -53,7 +59,9 @@ class RegisterInformation extends Data
      * @param ?string $scopeCode
      * @return ?string
      */
-    public function getAPIVersion($scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null): ?string
+    public function getAPIVersion(
+        string  $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+        ?string $scopeCode = null): ?string
     {
         return $this->getConfigValue('connector/version', $scopeType, $scopeCode);
     }

@@ -7,9 +7,12 @@
 namespace Beehexa\HexaSync\Controller\Adminhtml\Integration;
 
 use Beehexa\HexaSync\Api\HexaSyncIntegrationInterface;
+use Exception;
+use LogicException;
 use Magento\Backend\App\Action as BackendAction;
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Integration\Model\Integration;
 use Magento\Store\Model\GroupRepository;
@@ -20,29 +23,29 @@ class Register extends BackendAction
     /**
      * Authorization level of a basic admin session
      */
-    public const ADMIN_RESOURCE = 'Magento_Integration::integrations';
+    public const string ADMIN_RESOURCE = 'Magento_Integration::integrations';
 
     /**
      * @var HexaSyncIntegrationInterface
      */
-    protected $hexaSyncManagement;
+    protected HexaSyncIntegrationInterface $hexaSyncManagement;
 
     /**
      * @var StoreManagerInterface
      */
-    protected $storeManager;
+    protected StoreManagerInterface $storeManager;
 
     /**
      * @var GroupRepository
      */
-    protected $groupRepository;
+    protected GroupRepository $groupRepository;
 
     /**
      * Register constructor
      *
-     * @param Context                      $context
-     * @param StoreManagerInterface        $storeManager
-     * @param GroupRepository              $groupRepository
+     * @param Context $context
+     * @param StoreManagerInterface $storeManager
+     * @param GroupRepository $groupRepository
      * @param HexaSyncIntegrationInterface $hexaSyncManagement
      */
     public function __construct(
@@ -63,10 +66,10 @@ class Register extends BackendAction
     public function execute()
     {
         $result = [
-            'success'      => false,
+            'success' => false,
             'errorMessage' => '',
         ];
-        /** @var \Magento\Framework\App\RequestInterface $request */
+        /** @var RequestInterface $request */
         $websiteId = (int)$this->_request->getParam('website', 0);
         $storeId = (int)$this->_request->getParam('store', 0);
         if (!$storeId) {
@@ -85,10 +88,10 @@ class Register extends BackendAction
                 $accessToken = $this->hexaSyncManagement->generateToken($integration);
                 if ($accessToken) {
                     if (!$this->hexaSyncManagement->activateIntegration($integration)) {
-                        throw new \LogicException("Activation failed, please try again on System -> Integration");
+                        throw new LogicException("Activation failed, please try again on System -> Integration");
                     }
                 } else {
-                    throw new \LogicException("Can not generate access token".
+                    throw new LogicException("Can not generate access token" .
                         ", please try again on System -> Integration");
                 }
             }
@@ -96,10 +99,10 @@ class Register extends BackendAction
             $encryptString = $this->hexaSyncManagement->encrypt($hexaSyncData);
             $result['success'] = true;
             $result['encrypt'] = urlencode(base64_encode($encryptString));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $result['errorMessage'] = $e->getMessage();
         }
-        /** @var \Magento\Framework\Controller\Result\Json $resultJson */
+        /** @var Json $resultJson */
         $resultJson = $this->resultFactory->create(ResultFactory::TYPE_JSON);
         return $resultJson->setData($result);
     }

@@ -6,8 +6,8 @@
 
 namespace Beehexa\HexaSync\Model;
 
-use Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterfaceFactory;
 use Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterfaceFactory;
+use Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterfaceFactory;
 use Beehexa\HexaSync\Helper\Data as BeehexaData;
 use Beehexa\HexaSync\Helper\RegisterInformation;
 
@@ -16,29 +16,29 @@ class Context
     /**
      * @var HexaSyncIntegrationDataInterfaceFactory
      */
-    protected $hexaSyncIntegrationDataInterfaceFactory;
+    protected HexaSyncIntegrationDataInterfaceFactory $hexaSyncIntegrationDataInterfaceFactory;
 
     /**
      * @var BeehexaData
      */
-    protected $beehexaHelper;
+    protected BeehexaData $beehexaHelper;
 
     /**
      * @var RegisterInformation
      */
-    protected $registerInformation;
+    protected RegisterInformation $registerInformation;
 
     /**
      * @var HexaSyncInfoDataInterfaceFactory
      */
-    protected $hexaSyncInfoDataInterfaceFactory;
+    protected HexaSyncInfoDataInterfaceFactory $hexaSyncInfoDataInterfaceFactory;
 
     /**
      * Context constructor
      *
-     * @param BeehexaData                             $beehexaHelper
-     * @param RegisterInformation                     $registerInformation
-     * @param HexaSyncInfoDataInterfaceFactory        $hexaSyncInfoDataInterfaceFactory
+     * @param BeehexaData $beehexaHelper
+     * @param RegisterInformation $registerInformation
+     * @param HexaSyncInfoDataInterfaceFactory $hexaSyncInfoDataInterfaceFactory
      * @param HexaSyncIntegrationDataInterfaceFactory $hexaSyncIntegrationDataInterfaceFactory
      */
     public function __construct(
@@ -56,10 +56,9 @@ class Context
     /**
      * Getter for HexaSyncIntegrationDataInterfaceFactory
      *
-     * @return \Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterfaceFactory
+     * @return HexaSyncIntegrationDataInterfaceFactory
      */
-    public function getHexaSyncIntegrationDataInterfaceFactory():
-    \Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterfaceFactory
+    public function getHexaSyncIntegrationDataInterfaceFactory():   \Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterfaceFactory
     {
         return $this->hexaSyncIntegrationDataInterfaceFactory;
     }
@@ -67,7 +66,7 @@ class Context
     /**
      * Getter for HexaSyncInfoDataInterfaceFactory
      *
-     * @return \Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterfaceFactory
+     * @return HexaSyncInfoDataInterfaceFactory
      */
     public function getHexaSyncInfoDataInterfaceFactory(): \Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterfaceFactory
     {
@@ -79,7 +78,7 @@ class Context
      *
      * @return BeehexaData
      */
-    public function getBeehexaHelper(): BeehexaData
+    public function getBeehexaHelper(): \Beehexa\HexaSync\Helper\Data
     {
         return $this->beehexaHelper;
     }
@@ -89,7 +88,7 @@ class Context
      *
      * @return RegisterInformation
      */
-    public function getRegisterHelper(): RegisterInformation
+    public function getRegisterHelper(): \Beehexa\HexaSync\Helper\RegisterInformation
     {
         return $this->registerInformation;
     }

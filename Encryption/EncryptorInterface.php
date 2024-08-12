@@ -14,7 +14,7 @@ interface EncryptorInterface
      * @param string $data
      * @return string
      */
-    public function encrypt($data);
+    public function encrypt(string $data): string;
 
     /**
      * Decrypt a string
@@ -22,5 +22,5 @@ interface EncryptorInterface
      * @param string $data
      * @return string
      */
-    public function decrypt($data);
+    public function decrypt(string $data): string;
 }
