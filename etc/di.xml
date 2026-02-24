@@ -17,4 +17,20 @@
                 type="Beehexa\HexaSync\Model\StoreInformation"/>
     <preference for="Beehexa\HexaSync\Api\Data\StoreInformationDataInterface"
                 type="Beehexa\HexaSync\Model\Data\StoreInformationData"/>
+	<preference for="Beehexa\HexaSync\Api\LogRepositoryInterface" type="Beehexa\HexaSync\Model\LogRepository"/>
+	<preference for="Beehexa\HexaSync\Api\Data\LogInterface" type="Beehexa\HexaSync\Model\Log"/>
+	<preference for="Beehexa\HexaSync\Api\Data\LogSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+	<virtualType name="Beehexa\HexaSync\Model\ResourceModel\Log\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+		<arguments>
+			<argument name="mainTable" xsi:type="string">beehexa_hexasync_log</argument>
+			<argument name="resourceModel" xsi:type="string">Beehexa\HexaSync\Model\ResourceModel\Log\Collection</argument>
+		</arguments>
+	</virtualType>
+	<type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+		<arguments>
+			<argument name="collections" xsi:type="array">
+				<item name="beehexa_hexasync_log_listing_data_source" xsi:type="string">Beehexa\HexaSync\Model\ResourceModel\Log\Grid\Collection</item>
+			</argument>
+		</arguments>
+	</type>
 </config>

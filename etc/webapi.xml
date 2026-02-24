@@ -30,4 +30,34 @@
             <resource ref="Magento_Backend::admin"/>
         </resources>
     </route>
+	<route url="/V1/hexasync/log" method="POST">
+		<service class="Beehexa\HexaSync\Api\LogRepositoryInterface" method="save"/>
+		<resources>
+			<resource ref="Beehexa_HexaSync::log_save"/>
+		</resources>
+	</route>
+	<route url="/V1/hexasync/log/search" method="GET">
+		<service class="Beehexa\HexaSync\Api\LogRepositoryInterface" method="getList"/>
+		<resources>
+			<resource ref="Beehexa_HexaSync::log_view"/>
+		</resources>
+	</route>
+	<route url="/V1/hexasync/log/:logId" method="GET">
+		<service class="Beehexa\HexaSync\Api\LogRepositoryInterface" method="get"/>
+		<resources>
+			<resource ref="Beehexa_HexaSync::log_view"/>
+		</resources>
+	</route>
+	<route url="/V1/hexasync/log/:logId" method="PUT">
+		<service class="Beehexa\HexaSync\Api\LogRepositoryInterface" method="save"/>
+		<resources>
+			<resource ref="Beehexa_HexaSync::log_update"/>
+		</resources>
+	</route>
+	<route url="/V1/hexasync/log/:logId" method="DELETE">
+		<service class="Beehexa\HexaSync\Api\LogRepositoryInterface" method="deleteById"/>
+		<resources>
+			<resource ref="Beehexa_HexaSync::log_delete"/>
+		</resources>
+	</route>
 </routes>
