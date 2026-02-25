@@ -10,9 +10,6 @@
 	<settings>
 		<buttons>
 			<button name="back" class="Beehexa\HexaSync\Block\Adminhtml\Log\Edit\BackButton"/>
-			<button name="delete" class="Beehexa\HexaSync\Block\Adminhtml\Log\Edit\DeleteButton"/>
-			<button name="save" class="Beehexa\HexaSync\Block\Adminhtml\Log\Edit\SaveButton"/>
-			<button name="save_and_continue" class="Beehexa\HexaSync\Block\Adminhtml\Log\Edit\SaveAndContinueButton"/>
 		</buttons>
 		<namespace>beehexa_hexasync_log_form</namespace>
 		<dataScope>data</dataScope>
@@ -108,8 +105,8 @@
 			</argument>
 			<settings>
 				<dataType>text</dataType>
-				<label translate="true">hexasync_id</label>
-				<dataScope>hexasync_id</dataScope>
+				<label translate="true">log_detail_id</label>
+				<dataScope>log_detail_id</dataScope>
 				<validation>
 					<rule name="required-entry" xsi:type="boolean">false</rule>
 				</validation>

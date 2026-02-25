@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
 	<menu>
-		<add id="Beehexa_HexaSync::beehexa_hexasync_log" title="log" module="Beehexa_HexaSync" sortOrder="9999" resource="Magento_Backend::content" parent="Beehexa::top_level" action="beehexa_hexasync/log/index"/>
+		<add id="Beehexa_HexaSync::beehexa_hexasync_log" title="Sync Log" module="Beehexa_HexaSync" sortOrder="9999" resource="Magento_Backend::content" parent="Beehexa_Base::top_level" action="beehexa_hexasync/log/index"/>
 	</menu>
 </config>

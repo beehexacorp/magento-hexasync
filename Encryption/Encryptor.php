@@ -17,7 +17,7 @@ use phpseclib3\Crypt\RSA\PublicKey;
 
 class Encryptor implements EncryptorInterface
 {
-    public const string MODULE_NAME = 'Beehexa_HexaSync';
+    public const MODULE_NAME = 'Beehexa_HexaSync';
 
     /**
      *

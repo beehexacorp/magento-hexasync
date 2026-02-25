@@ -27,5 +27,12 @@ class Collection extends AbstractCollection
             \Beehexa\HexaSync\Model\ResourceModel\Log::class
         );
     }
+
+    protected function _initSelect()
+    {
+        parent::_initSelect();
+        $this->setOrder($this->_idFieldName,'DESC');
+        return $this;
+    }
 }
 

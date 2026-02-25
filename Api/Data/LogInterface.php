@@ -13,14 +13,17 @@ interface LogInterface
     const EXECUTED_AT = 'executed_at';
     const ERROR = 'error';
     const PROFILE_NAME = 'profile_name';
+    const PROFILE_ID = 'profile_id';
     const ACTION_TYPE = 'action_type';
     const CREATED_AT = 'created_at';
     const MESSAGE = 'message';
     const TASK_STATUS = 'task_status';
     const TASK_ID = 'task_id';
+    const TASK_NAME = 'task_name';
     const REFERENCE_INFO = 'reference_info';
+    const PUSH_NOTE = 'push_node';
     const LOG_ID = 'log_id';
-    const HEXASYNC_ID = 'hexasync_id';
+    const LOG_DETAIL_ID = 'log_detail_id';
     const RETRY_COUNT = 'retry_count';
     const EXECUTE_AT = 'execute_at';
 
@@ -77,6 +80,19 @@ interface LogInterface
     public function setProfileName($profileName);
 
     /**
+     * Get profile_id
+     * @return string|null
+     */
+    public function getProfileId();
+
+    /**
+     * Set profile_id
+     * @param string $profileId
+     * @return \Beehexa\HexaSync\Log\Api\Data\LogInterface
+     */
+    public function setProfileId($profileId);
+
+    /**
      * Get action_type
      * @return string|null
      */
@@ -90,17 +106,17 @@ interface LogInterface
     public function setActionType($actionType);
 
     /**
-     * Get hexasync_id
+     * Get log_detail_id
      * @return string|null
      */
-    public function getHexasyncId();
+    public function getLogDetailId();
 
     /**
-     * Set hexasync_id
-     * @param string $hexasyncId
+     * Set log_detail_id
+     * @param string $logDetailId
      * @return \Beehexa\HexaSync\Log\Api\Data\LogInterface
      */
-    public function setHexasyncId($hexasyncId);
+    public function setLogDetailId($logDetailId);
 
     /**
      * Get reference_info
@@ -114,6 +130,19 @@ interface LogInterface
      * @return \Beehexa\HexaSync\Log\Api\Data\LogInterface
      */
     public function setReferenceInfo($referenceInfo);
+
+    /**
+     * Get push_note
+     * @return string|null
+     */
+    public function getPushNote();
+
+    /**
+     * Set push_note
+     * @param string $pushNote
+     * @return \Beehexa\HexaSync\Log\Api\Data\LogInterface
+     */
+    public function setPushNote($pushNote);
 
     /**
      * Get error
@@ -140,6 +169,19 @@ interface LogInterface
      * @return \Beehexa\HexaSync\Log\Api\Data\LogInterface
      */
     public function setTaskId($taskId);
+
+    /**
+     * Get task_name
+     * @return string|null
+     */
+    public function getTaskName();
+
+    /**
+     * Set task_name
+     * @param string $taskName
+     * @return \Beehexa\HexaSync\Log\Api\Data\LogInterface
+     */
+    public function setTaskName($taskName);
 
     /**
      * Get task_status

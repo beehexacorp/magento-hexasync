@@ -23,7 +23,7 @@ class Register extends BackendAction
     /**
      * Authorization level of a basic admin session
      */
-    public const string ADMIN_RESOURCE = 'Magento_Integration::integrations';
+    public const ADMIN_RESOURCE = 'Magento_Integration::integrations';
 
     /**
      * @var HexaSyncIntegrationInterface

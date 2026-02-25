@@ -7,12 +7,15 @@
 		</constraint>
 		<column name="message" nullable="false" xsi:type="text" comment="Log message from HexaSync"/>
 		<column name="created_at" nullable="false" xsi:type="timestamp" comment="created_at" default="CURRENT_TIMESTAMP"/>
+		<column name="profile_id" nullable="true" xsi:type="varchar" comment="profile_id" length="255"/>
 		<column name="profile_name" nullable="true" xsi:type="varchar" comment="profile_name" length="255"/>
 		<column name="action_type" nullable="true" xsi:type="varchar" comment="action_type" length="255"/>
-		<column name="hexasync_id" nullable="true" xsi:type="varchar" comment="hexasync_id" length="255"/>
+		<column name="log_detail_id" nullable="true" xsi:type="varchar" comment="Log Detail ID" length="255"/>
 		<column name="reference_info" nullable="true" xsi:type="varchar" comment="reference_info" length="255"/>
+		<column name="push_note" nullable="true" xsi:type="text" comment="reference_info" />
 		<column name="error" nullable="true" xsi:type="text" comment="error"/>
 		<column name="task_id" nullable="true" xsi:type="varchar" comment="task_id" length="255"/>
+		<column name="task_name" nullable="true" xsi:type="varchar" comment="task_name" length="255"/>
 		<column name="task_status" nullable="true" xsi:type="varchar" comment="task_status" length="255"/>
 		<column name="executed_at" nullable="true" xsi:type="varchar" comment="executed_at" length="255"/>
 		<column name="execute_at" nullable="true" xsi:type="varchar" comment="execute_at" length="255"/>

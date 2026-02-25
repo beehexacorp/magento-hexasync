@@ -88,6 +88,22 @@ class Log extends AbstractModel implements LogInterface
     /**
      * @inheritDoc
      */
+    public function getProfileId()
+    {
+        return $this->getData(self::PROFILE_ID);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setProfileId($profileId)
+    {
+        return $this->setData(self::PROFILE_ID, $profileId);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getActionType()
     {
         return $this->getData(self::ACTION_TYPE);
@@ -104,17 +120,17 @@ class Log extends AbstractModel implements LogInterface
     /**
      * @inheritDoc
      */
-    public function getHexasyncId()
+    public function getLogDetailId()
     {
-        return $this->getData(self::HEXASYNC_ID);
+        return $this->getData(self::LOG_DETAIL_ID);
     }
 
     /**
      * @inheritDoc
      */
-    public function setHexasyncId($hexasyncId)
+    public function setLogDetailId($logDetailId)
     {
-        return $this->setData(self::HEXASYNC_ID, $hexasyncId);
+        return $this->setData(self::LOG_DETAIL_ID, $logDetailId);
     }
 
     /**
@@ -131,6 +147,22 @@ class Log extends AbstractModel implements LogInterface
     public function setReferenceInfo($referenceInfo)
     {
         return $this->setData(self::REFERENCE_INFO, $referenceInfo);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPushNote()
+    {
+        return $this->getData(self::PUSH_NOTE);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setPushNote($pushNote)
+    {
+        return $this->setData(self::PUSH_NOTE, $pushNote);
     }
 
     /**
@@ -163,6 +195,22 @@ class Log extends AbstractModel implements LogInterface
     public function setTaskId($taskId)
     {
         return $this->setData(self::TASK_ID, $taskId);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getTaskName()
+    {
+        return $this->getData(self::TASK_NAME);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setTaskName($taskName)
+    {
+        return $this->setData(self::TASK_NAME, $taskName);
     }
 
     /**

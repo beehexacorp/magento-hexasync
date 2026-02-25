@@ -10,13 +10,7 @@
 		<deps>
 			<dep>beehexa_hexasync_log_listing.beehexa_hexasync_log_listing_data_source</dep>
 		</deps>
-		<buttons>
-			<button name="add">
-				<url path="*/*/new"/>
-				<class>primary</class>
-				<label translate="true">Add new log</label>
-			</button>
-		</buttons>
+		<buttons/>
 	</settings>
 	<dataSource name="beehexa_hexasync_log_listing_data_source" component="Magento_Ui/js/grid/provider">
 		<settings>
@@ -38,32 +32,10 @@
 			<sticky>true</sticky>
 		</settings>
 		<bookmark name="bookmarks"/>
-		<columnsControls name="columns_controls"/>
 		<filters name="listing_filters"/>
 		<paging name="listing_paging"/>
 	</listingToolbar>
 	<columns name="beehexa_hexasync_log_columns">
-		<settings>
-			<editorConfig>
-				<param name="selectProvider" xsi:type="string">beehexa_hexasync_log_listing.beehexa_hexasync_log_listing.beehexa_hexasync_log_columns.ids</param>
-				<param name="enabled" xsi:type="boolean">true</param>
-				<param name="indexField" xsi:type="string">log_id</param>
-				<param name="clientConfig" xsi:type="array">
-					<item name="saveUrl" xsi:type="url" path="beehexa_hexasync/log/inlineEdit"/>
-					<item name="validateBeforeSave" xsi:type="boolean">false</item>
-				</param>
-			</editorConfig>
-			<childDefaults>
-				<param name="fieldAction" xsi:type="array">
-					<item name="provider" xsi:type="string">beehexa_hexasync_log_listing.beehexa_hexasync_log_listing.beehexa_hexasync_log_columns_editor</item>
-					<item name="target" xsi:type="string">startEdit</item>
-					<item name="params" xsi:type="array">
-						<item name="0" xsi:type="string">${ $.$data.rowIndex }</item>
-						<item name="1" xsi:type="boolean">true</item>
-					</item>
-				</param>
-			</childDefaults>
-		</settings>
 		<selectionsColumn name="ids">
 			<settings>
 				<indexField>log_id</indexField>
@@ -76,16 +48,77 @@
 				<label translate="true">ID</label>
 			</settings>
 		</column>
-		<column name="message">
+		<column name="profile_name">
 			<settings>
 				<filter>text</filter>
-				<label translate="true">message</label>
-				<editor>
-					<editorType>text</editorType>
-					<validation>
-						<rule name="required-entry" xsi:type="boolean">false</rule>
-					</validation>
-				</editor>
+				<label translate="true">Profile Name</label>
+			</settings>
+		</column>
+		<column name="task_name">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Task Name</label>
+			</settings>
+		</column>
+		<column name="action_type">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Action Type</label>
+			</settings>
+		</column>
+		<column name="reference_info" class="\Beehexa\HexaSync\Ui\Component\Listing\Column\StripContent">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Reference Info</label>
+			</settings>
+		</column>
+		<column name="message" class="\Beehexa\HexaSync\Ui\Component\Listing\Column\StripContent">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Message</label>
+			</settings>
+		</column>
+		<column name="error" class="\Beehexa\HexaSync\Ui\Component\Listing\Column\StripContent">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Error Message</label>
+			</settings>
+		</column>
+		<column name="task_status">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Task Status</label>
+			</settings>
+		</column>
+		<column name="execute_at">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Execute At</label>
+			</settings>
+		</column>
+		<column name="executed_at">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Executed At</label>
+			</settings>
+		</column>
+		<column name="retry_count">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Retry Count</label>
+			</settings>
+		</column>
+		<column name="created_at">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Log At</label>
+			</settings>
+		</column>
+		<column name="log_detail_id" class="Beehexa\HexaSync\Ui\Component\Listing\Column\AppendURL">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Detail</label>
+				<bodyTmpl>ui/grid/cells/html</bodyTmpl>
 			</settings>
 		</column>
 		<actionsColumn name="actions" class="Beehexa\HexaSync\Ui\Component\Listing\Column\LogActions">
@@ -95,137 +128,5 @@
 				<resizeDefaultWidth>107</resizeDefaultWidth>
 			</settings>
 		</actionsColumn>
-		<column name="created_at">
-			<settings>
-				<filter>text</filter>
-				<label translate="true">created_at</label>
-				<editor>
-					<editorType>date</editorType>
-					<validation>
-						<rule name="required-entry" xsi:type="boolean">false</rule>
-					</validation>
-				</editor>
-			</settings>
-		</column>
-		<column name="profile_name">
-			<settings>
-				<filter>text</filter>
-				<label translate="true">profile_name</label>
-				<editor>
-					<editorType>text</editorType>
-					<validation>
-						<rule name="required-entry" xsi:type="boolean">false</rule>
-					</validation>
-				</editor>
-			</settings>
-		</column>
-		<column name="action_type">
-			<settings>
-				<filter>text</filter>
-				<label translate="true">action_type</label>
-				<editor>
-					<editorType>text</editorType>
-					<validation>
-						<rule name="required-entry" xsi:type="boolean">false</rule>
-					</validation>
-				</editor>
-			</settings>
-		</column>
-		<column name="hexasync_id">
-			<settings>
-				<filter>text</filter>
-				<label translate="true">hexasync_id</label>
-				<editor>
-					<editorType>text</editorType>
-					<validation>
-						<rule name="required-entry" xsi:type="boolean">false</rule>
-					</validation>
-				</editor>
-			</settings>
-		</column>
-		<column name="reference_info">
-			<settings>
-				<filter>text</filter>
-				<label translate="true">reference_info</label>
-				<editor>
-					<editorType>text</editorType>
-					<validation>
-						<rule name="required-entry" xsi:type="boolean">false</rule>
-					</validation>
-				</editor>
-			</settings>
-		</column>
-		<column name="error">
-			<settings>
-				<filter>text</filter>
-				<label translate="true">error</label>
-				<editor>
-					<editorType>text</editorType>
-					<validation>
-						<rule name="required-entry" xsi:type="boolean">false</rule>
-					</validation>
-				</editor>
-			</settings>
-		</column>
-		<column name="task_id">
-			<settings>
-				<filter>text</filter>
-				<label translate="true">task_id</label>
-				<editor>
-					<editorType>text</editorType>
-					<validation>
-						<rule name="required-entry" xsi:type="boolean">false</rule>
-					</validation>
-				</editor>
-			</settings>
-		</column>
-		<column name="task_status">
-			<settings>
-				<filter>text</filter>
-				<label translate="true">task_status</label>
-				<editor>
-					<editorType>text</editorType>
-					<validation>
-						<rule name="required-entry" xsi:type="boolean">false</rule>
-					</validation>
-				</editor>
-			</settings>
-		</column>
-		<column name="executed_at">
-			<settings>
-				<filter>text</filter>
-				<label translate="true">executed_at</label>
-				<editor>
-					<editorType>text</editorType>
-					<validation>
-						<rule name="required-entry" xsi:type="boolean">false</rule>
-					</validation>
-				</editor>
-			</settings>
-		</column>
-		<column name="execute_at">
-			<settings>
-				<filter>text</filter>
-				<label translate="true">execute_at</label>
-				<editor>
-					<editorType>text</editorType>
-					<validation>
-						<rule name="required-entry" xsi:type="boolean">false</rule>
-					</validation>
-				</editor>
-			</settings>
-		</column>
-		<column name="retry_count">
-			<settings>
-				<filter>text</filter>
-				<label translate="true">retry_count</label>
-				<editor>
-					<editorType>text</editorType>
-					<validation>
-						<rule name="required-entry" xsi:type="boolean">false</rule>
-					</validation>
-				</editor>
-			</settings>
-		</column>
 	</columns>
 </listing>
