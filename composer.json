@@ -7,7 +7,7 @@
         "php": ">=8.1",
         "phpseclib/phpseclib": "~3",
         "magento/framework": ">=102",
-        "beehexacorp/magento-base": "~2 || ~v2"
+        "beehexacorp/magento-base": ">=2"
     },
     "authors": [
         {
