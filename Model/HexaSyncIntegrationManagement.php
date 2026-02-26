@@ -131,7 +131,7 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     /**
      * @inheritDoc
      */
-    public function activateIntegration(Integration $integration = null): bool
+    public function activateIntegration(?Integration $integration): bool
     {
         if (null == $integration) {
             $integration = $this->getIntegration();
@@ -323,7 +323,7 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     /**
      * @inheritDoc
      */
-    public function getConnectorInfo(string $storeId = null): HexaSyncInfoDataInterface
+    public function getConnectorInfo(?string $storeId): HexaSyncInfoDataInterface
     {
         $registerData = [];
         $registerData['account'] = $this->registerHelper->getAccount(ScopeInterface::SCOPE_STORE, $storeId);

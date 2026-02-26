@@ -31,7 +31,7 @@ interface HexaSyncIntegrationInterface
      * @param ?string $storeId
      * @return \Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface
      */
-    public function getConnectorInfo(string $storeId = null): \Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface;
+    public function getConnectorInfo(?string $storeId): \Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface;
 
     /**
      * Encrypting data
@@ -56,5 +56,5 @@ interface HexaSyncIntegrationInterface
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      * @throws \Magento\Framework\Exception\IntegrationException
      */
-    public function activateIntegration(?\Magento\Integration\Model\Integration $integration = null): bool;
+    public function activateIntegration(?\Magento\Integration\Model\Integration $integration): bool;
 }
