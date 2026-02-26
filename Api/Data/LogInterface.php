@@ -21,7 +21,7 @@ interface LogInterface
     const TASK_ID = 'task_id';
     const TASK_NAME = 'task_name';
     const REFERENCE_INFO = 'reference_info';
-    const PUSH_NOTE = 'push_node';
+    const PUSH_NOTE = 'push_note';
     const LOG_ID = 'log_id';
     const LOG_DETAIL_ID = 'log_detail_id';
     const RETRY_COUNT = 'retry_count';
