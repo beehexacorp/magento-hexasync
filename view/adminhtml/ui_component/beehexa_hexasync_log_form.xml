@@ -37,22 +37,7 @@
 		<settings>
 			<label>General</label>
 		</settings>
-		<field name="message" formElement="textarea" sortOrder="10">
-			<argument name="data" xsi:type="array">
-				<item name="config" xsi:type="array">
-					<item name="source" xsi:type="string">log</item>
-				</item>
-			</argument>
-			<settings>
-				<dataType>text</dataType>
-				<label translate="true">message</label>
-				<dataScope>message</dataScope>
-				<validation>
-					<rule name="required-entry" xsi:type="boolean">false</rule>
-				</validation>
-			</settings>
-		</field>
-		<field name="created_at" formElement="date" sortOrder="20">
+		<field name="created_at" formElement="date" sortOrder="0">
 			<argument name="data" xsi:type="array">
 				<item name="config" xsi:type="array">
 					<item name="source" xsi:type="string">log</item>
@@ -67,7 +52,7 @@
 				</validation>
 			</settings>
 		</field>
-		<field name="profile_name" formElement="input" sortOrder="30">
+		<field name="profile_name" formElement="input" sortOrder="10">
 			<argument name="data" xsi:type="array">
 				<item name="config" xsi:type="array">
 					<item name="source" xsi:type="string">log</item>
@@ -75,14 +60,29 @@
 			</argument>
 			<settings>
 				<dataType>text</dataType>
-				<label translate="true">profile_name</label>
+				<label translate="true">Profile Name</label>
 				<dataScope>profile_name</dataScope>
 				<validation>
 					<rule name="required-entry" xsi:type="boolean">false</rule>
 				</validation>
 			</settings>
 		</field>
-		<field name="action_type" formElement="input" sortOrder="40">
+		<field name="task_name" formElement="input" sortOrder="20">
+			<argument name="data" xsi:type="array">
+				<item name="config" xsi:type="array">
+					<item name="source" xsi:type="string">log</item>
+				</item>
+			</argument>
+			<settings>
+				<dataType>text</dataType>
+				<label translate="true">Task Name</label>
+				<dataScope>task_name</dataScope>
+				<validation>
+					<rule name="required-entry" xsi:type="boolean">false</rule>
+				</validation>
+			</settings>
+		</field>
+		<field name="action_type" formElement="input" sortOrder="30">
 			<argument name="data" xsi:type="array">
 				<item name="config" xsi:type="array">
 					<item name="source" xsi:type="string">log</item>
@@ -97,22 +97,7 @@
 				</validation>
 			</settings>
 		</field>
-		<field name="hexasync_id" formElement="input" sortOrder="50">
-			<argument name="data" xsi:type="array">
-				<item name="config" xsi:type="array">
-					<item name="source" xsi:type="string">log</item>
-				</item>
-			</argument>
-			<settings>
-				<dataType>text</dataType>
-				<label translate="true">log_detail_id</label>
-				<dataScope>log_detail_id</dataScope>
-				<validation>
-					<rule name="required-entry" xsi:type="boolean">false</rule>
-				</validation>
-			</settings>
-		</field>
-		<field name="reference_info" formElement="input" sortOrder="60">
+		<field name="reference_info" formElement="input" sortOrder="40">
 			<argument name="data" xsi:type="array">
 				<item name="config" xsi:type="array">
 					<item name="source" xsi:type="string">log</item>
@@ -127,6 +112,36 @@
 				</validation>
 			</settings>
 		</field>
+		<field name="message" formElement="textarea" sortOrder="50">
+			<argument name="data" xsi:type="array">
+				<item name="config" xsi:type="array">
+					<item name="source" xsi:type="string">log</item>
+				</item>
+			</argument>
+			<settings>
+				<dataType>text</dataType>
+				<label translate="true">Message</label>
+				<dataScope>message</dataScope>
+				<validation>
+					<rule name="required-entry" xsi:type="boolean">false</rule>
+				</validation>
+			</settings>
+		</field>
+		<field name="push_note" formElement="textarea" sortOrder="60">
+			<argument name="data" xsi:type="array">
+				<item name="config" xsi:type="array">
+					<item name="source" xsi:type="string">log</item>
+				</item>
+			</argument>
+			<settings>
+				<dataType>text</dataType>
+				<label translate="true">Push Note</label>
+				<dataScope>push_note</dataScope>
+				<validation>
+					<rule name="required-entry" xsi:type="boolean">false</rule>
+				</validation>
+			</settings>
+		</field>
 		<field name="error" formElement="textarea" sortOrder="70">
 			<argument name="data" xsi:type="array">
 				<item name="config" xsi:type="array">
@@ -135,7 +150,7 @@
 			</argument>
 			<settings>
 				<dataType>text</dataType>
-				<label translate="true">error</label>
+				<label translate="true">Error message</label>
 				<dataScope>error</dataScope>
 				<validation>
 					<rule name="required-entry" xsi:type="boolean">false</rule>
@@ -150,7 +165,7 @@
 			</argument>
 			<settings>
 				<dataType>text</dataType>
-				<label translate="true">task_id</label>
+				<label translate="true">Task Id</label>
 				<dataScope>task_id</dataScope>
 				<validation>
 					<rule name="required-entry" xsi:type="boolean">false</rule>
@@ -165,7 +180,7 @@
 			</argument>
 			<settings>
 				<dataType>text</dataType>
-				<label translate="true">task_status</label>
+				<label translate="true">Task Status</label>
 				<dataScope>task_status</dataScope>
 				<validation>
 					<rule name="required-entry" xsi:type="boolean">false</rule>
@@ -180,7 +195,7 @@
 			</argument>
 			<settings>
 				<dataType>text</dataType>
-				<label translate="true">executed_at</label>
+				<label translate="true">Executed At</label>
 				<dataScope>executed_at</dataScope>
 				<validation>
 					<rule name="required-entry" xsi:type="boolean">false</rule>
@@ -195,7 +210,7 @@
 			</argument>
 			<settings>
 				<dataType>text</dataType>
-				<label translate="true">execute_at</label>
+				<label translate="true">Execute At</label>
 				<dataScope>execute_at</dataScope>
 				<validation>
 					<rule name="required-entry" xsi:type="boolean">false</rule>
@@ -210,7 +225,7 @@
 			</argument>
 			<settings>
 				<dataType>text</dataType>
-				<label translate="true">retry_count</label>
+				<label translate="true">Retry Count</label>
 				<dataScope>retry_count</dataScope>
 				<validation>
 					<rule name="required-entry" xsi:type="boolean">false</rule>
