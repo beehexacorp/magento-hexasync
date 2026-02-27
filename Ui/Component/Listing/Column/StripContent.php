@@ -22,7 +22,7 @@ class StripContent extends \Magento\Ui\Component\Listing\Columns\Column
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
                 try {
-                    $item[$this->getData('name')] =$item[$this->getData('name')]?substr($item[$this->getData('name')], 0, 150) . '...':'';
+                    $item[$this->getData('name')] = strlen($item[$this->getData('name')]) > 150 ? substr($item[$this->getData('name')], 0, 150) . '...': '';
                 } catch (\Exception $exception) {
                     //Displaying payment code (with no changes) if payment method is not available in system
                 }
