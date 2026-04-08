@@ -40,6 +40,22 @@ class Log extends AbstractModel implements LogInterface
     /**
      * @inheritDoc
      */
+    public function getItemId()
+    {
+        return $this->getData(self::ITEM_ID);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setItemId($itemId)
+    {
+        return $this->setData(self::ITEM_ID, $itemId);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getMessage()
     {
         return $this->getData(self::MESSAGE);

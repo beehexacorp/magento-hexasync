@@ -15,6 +15,7 @@
 		<column name="push_note" nullable="true" xsi:type="text" comment="reference_info" />
 		<column name="error" nullable="true" xsi:type="text" comment="error"/>
 		<column name="task_id" nullable="true" xsi:type="varchar" comment="task_id" length="255"/>
+		<column name="item_id" nullable="true" xsi:type="varchar" comment="item_id" length="255"/>
 		<column name="task_name" nullable="true" xsi:type="varchar" comment="task_name" length="255"/>
 		<column name="task_status" nullable="true" xsi:type="varchar" comment="task_status" length="255"/>
 		<column name="executed_at" nullable="true" xsi:type="varchar" comment="executed_at" length="255"/>

@@ -20,6 +20,8 @@ interface LogInterface
     const TASK_STATUS = 'task_status';
     const TASK_ID = 'task_id';
     const TASK_NAME = 'task_name';
+
+    const ITEM_ID = 'item_id';
     const REFERENCE_INFO = 'reference_info';
     const PUSH_NOTE = 'push_note';
     const LOG_ID = 'log_id';
@@ -39,6 +41,19 @@ interface LogInterface
      * @return \Beehexa\HexaSync\Log\Api\Data\LogInterface
      */
     public function setLogId($logId);
+
+    /**
+     * Get ITEM_ID
+     * @return string|null
+     */
+    public function getItemId();
+
+    /**
+     * Set ITEM_ID
+     * @param string $itemId
+     * @return \Beehexa\HexaSync\Log\Api\Data\LogInterface
+     */
+    public function setItemId($itemId);
 
     /**
      * Get message
