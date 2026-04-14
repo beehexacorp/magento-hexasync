@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="hexasync_log_notification_template" label="HexaSync Log Notification" file="log_notification.html" type="html" module="Beehexa_HexaSync" area="adminhtml"/>
+</config>

@@ -33,6 +33,17 @@
                     <frontend_model>\Beehexa\HexaSync\Block\System\Config\Form\Field\RegisterStore</frontend_model>
                 </field>
             </group>
+            <group id="notifications" translate="label" type="text" sortOrder="950" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Notifications</label>
+                <field id="enable_email_notifications" translate="label" type="select" sortOrder="5" showInDefault="1" showInStore="1" showInWebsite="1">
+                    <label>Enable Email Notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="notification_emails" translate="label" type="text" sortOrder="10" showInDefault="1" showInStore="1" showInWebsite="1">
+                    <label>Notification Emails</label>
+                    <comment>Comma-separated list of email addresses to receive notifications about new logs.</comment>
+                </field>
+            </group>
         </section>
     </system>
 </config>
