@@ -128,7 +128,6 @@ class CheckNewLogs
                 if ($enableEmails && $emails) {
                     $emailList = array_map('trim', explode(',', $emails));
                     $subject = 'New Logs Detected';
-                    $message = 'New log Sync entries have been added to the system logs. Please check the logs for details.';
 
                     $this->inlineTranslation->suspend();
                     $store = $this->storeManager->getStore();
@@ -140,8 +139,7 @@ class CheckNewLogs
                     $transport = $this->transportBuilder
                         ->setTemplateOptions(['area' => 'adminhtml', 'store' => 0])
                         ->setTemplateVars([
-                            'subject' => $subject,
-                            'message' => $message
+                            'subject' => $subject
                         ])
                         ->setFrom(['email' => $fromEmail, 'name' => $fromName])
                         ->addTo($emailList)
