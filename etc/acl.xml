@@ -3,6 +3,7 @@
 	<acl>
 		<resources>
 			<resource id="Magento_Backend::admin">
+				<resource id="Beehexa_HexaSync::connector" title="HexaSync Connector API" sortOrder="5"/>
 				<resource id="Beehexa_HexaSync::log" title="HexaSync Logging" sortOrder="10">
 					<resource id="Beehexa_HexaSync::log_save" title="Save log" sortOrder="10"/>
 					<resource id="Beehexa_HexaSync::log_delete" title="Delete log" sortOrder="20"/>

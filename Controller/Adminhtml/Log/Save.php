@@ -11,6 +11,10 @@ use Magento\Framework\Exception\LocalizedException;
 
 class Save extends \Magento\Backend\App\Action
 {
+    /**
+     * Authorization level required to save a log entry
+     */
+    public const ADMIN_RESOURCE = 'Beehexa_HexaSync::log_save';
 
     protected $dataPersistor;
 

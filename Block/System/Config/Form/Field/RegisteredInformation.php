@@ -46,18 +46,38 @@ class RegisteredInformation extends Field
      */
     public function _getElementHtml($element): string
     {
-        $registerInfo = $this->hexaSyncIntegrationManagement->getConnectorInfo($this->getCurrentStore()->getId());
-        $html = sprintf("<div><strong>Current Store: </strong>%s</div>", $this->getCurrentStore()->getName());
+        $store = $this->getCurrentStore();
+        $registerInfo = $this->hexaSyncIntegrationManagement->getConnectorInfo((string)$store->getId());
+        $html = $this->renderRow(__('Current Store:'), (string)$store->getName());
         if ($registerInfo->getAccount()) {
-            $status = $registerInfo->getStatus() ? "Active" : "Suspended";
-            $html .= sprintf("<div><strong>Account:</strong> %s</div>", $registerInfo->getAccount());
-            $html .= sprintf("<div><strong>Registered Store Name:</strong> %s</div>", $registerInfo->getStoreName());
-            $html .= sprintf("<div><strong>Hexasync Version:</strong> %s</div>", $registerInfo->getVersion());
-            $html .= sprintf("<div><strong>Status:</strong> %s</div>", $status);
+            $status = $registerInfo->getStatus() ? __('Active') : __('Suspended');
+            $html .= $this->renderRow(__('Account:'), (string)$registerInfo->getAccount());
+            $html .= $this->renderRow(__('Registered Store Name:'), (string)$registerInfo->getStoreName());
+            $html .= $this->renderRow(__('Hexasync Version:'), (string)$registerInfo->getVersion());
+            $html .= $this->renderRow(__('Status:'), (string)$status);
         } else {
-            $html .= "<div><span style='color: darkred'><strong>Connect your store</strong></span></div>";
+            $html .= sprintf(
+                '<div><span style="color: darkred"><strong>%s</strong></span></div>',
+                $this->_escaper->escapeHtml(__('Connect your store'))
+            );
         }
         return $html;
+    }
+
+    /**
+     * Render one "label: value" line with both parts escaped
+     *
+     * @param \Magento\Framework\Phrase|string $label
+     * @param string $value
+     * @return string
+     */
+    private function renderRow($label, string $value): string
+    {
+        return sprintf(
+            '<div><strong>%s</strong> %s</div>',
+            $this->_escaper->escapeHtml($label),
+            $this->_escaper->escapeHtml($value)
+        );
     }
 
     /**

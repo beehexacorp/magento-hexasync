@@ -11,13 +11,14 @@ use Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterfaceFactory;
 use Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterface;
 use Beehexa\HexaSync\Api\Data\HexaSyncIntegrationDataInterfaceFactory;
 use Beehexa\HexaSync\Api\HexaSyncIntegrationInterface;
-use Beehexa\HexaSync\Encryption\EncryptorInterface;
 use Beehexa\HexaSync\Helper\RegisterInformation;
 use Beehexa\HexaSync\Model\Context as HexaSyncContext;
 use Magento\Backend\Model\UrlInterface;
+use Magento\Framework\App\Cache\Type\Config as ConfigCache;
+use Magento\Framework\App\Cache\TypeListInterface;
+use Magento\Framework\App\Config\ReinitableConfigInterface;
 use Magento\Config\Model\Config as SystemConfig;
 use Magento\Framework\App\Config\ConfigResource\ConfigInterface;
-use Magento\Framework\DataObject;
 use Magento\Framework\Event\ManagerInterface as EventManager;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\IntegrationException;
@@ -25,7 +26,6 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Integration\Api\IntegrationServiceInterface;
 use Magento\Integration\Api\OauthServiceInterface;
 use Magento\Integration\Model\Integration;
-use Magento\Integration\Model\Oauth\Token;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
@@ -55,11 +55,6 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
      * @var UrlInterface
      */
     protected UrlInterface $backendUrl;
-
-    /**
-     * @var EncryptorInterface
-     */
-    protected EncryptorInterface $encryptor;
 
     /**
      * @var OauthServiceInterface
@@ -92,6 +87,16 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     private EventManager $eventManager;
 
     /**
+     * @var TypeListInterface
+     */
+    private TypeListInterface $cacheTypeList;
+
+    /**
+     * @var ReinitableConfigInterface
+     */
+    private ReinitableConfigInterface $reinitableConfig;
+
+    /**
      * IntegrationManager constructor
      *
      * @param HexaSyncContext $context
@@ -100,9 +105,10 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
      * @param ConfigInterface $configManager
      * @param StoreManagerInterface $storeManager
      * @param IntegrationServiceInterface $integrationService
-     * @param EncryptorInterface $encryptor
      * @param OauthServiceInterface $oauthService
      * @param UrlInterface $backendUrl
+     * @param TypeListInterface $cacheTypeList
+     * @param ReinitableConfigInterface $reinitableConfig
      */
     public function __construct(
         HexaSyncContext             $context,
@@ -111,9 +117,10 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
         ConfigInterface             $configManager,
         StoreManagerInterface       $storeManager,
         IntegrationServiceInterface $integrationService,
-        EncryptorInterface          $encryptor,
         OauthServiceInterface       $oauthService,
-        UrlInterface                $backendUrl
+        UrlInterface                $backendUrl,
+        TypeListInterface           $cacheTypeList,
+        ReinitableConfigInterface   $reinitableConfig
     ) {
         $this->integrationService = $integrationService;
         $this->hexaSyncIntegrationDataInterfaceFactory = $context->getHexaSyncIntegrationDataInterfaceFactory();
@@ -124,8 +131,9 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
         $this->configManager = $configManager;
         $this->eventManager = $eventManager;
         $this->backendUrl = $backendUrl;
-        $this->encryptor = $encryptor;
         $this->oauthService = $oauthService;
+        $this->cacheTypeList = $cacheTypeList;
+        $this->reinitableConfig = $reinitableConfig;
     }
 
     /**
@@ -172,44 +180,11 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
             'name' => $integrationName,
             'status' => $status,
             'all_resources' => true,
-            // Remove this because credential will be published to Hexasync by http request.
+            // Remove this because credential will be published to HexaSync by http request.
             //            'endpoint'          => 'https://app.hexasync.com/callback/magento',
             //            'identity_link_url' => 'https://app.hexasync.com/callback/magento',
             'resource' => [],
         ];
-    }
-
-    /**
-     * Register Integration
-     *
-     * @param int $integrationId
-     * @param string|null $storeCode
-     * @return HexaSyncIntegrationDataInterface
-     * @throws NoSuchEntityException
-     */
-    public function register($integrationId, ?string $storeCode)
-    {
-        $store = $this->storeManager->getStore($storeCode);
-        $storeName = $store->getName();
-        $storeCode = $store->getCode();
-        $storeURL = $store->getBaseUrl();
-        $websiteId = $store->getWebsiteId();
-        if (!$integrationId) {
-            throw new NoSuchEntityException(__('Cannot find predefined integration user!'));
-        }
-        //Reload integration for getting consumer and access
-        $integration = $this->integrationService->get($integrationId);
-        return $this->hexaSyncIntegrationDataInterfaceFactory->create([
-            'data' => [
-                'access_token' => $integration->getData('token'),
-                'access_token_secret' => $integration->getData('token_secret'),
-                'consumer_key' => $integration->getData('consumer_key'),
-                'consumer_secret' => $integration->getData('consumer_secret'),
-                'base_url' => $this->getAdminUrl(),
-                'store_name' => $storeName,
-                'store_code' => $storeCode,
-            ]
-        ]);
     }
 
     /**
@@ -223,32 +198,28 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     }
 
     /**
-     * This method execute Generate Token command and enable integration
+     * Point the integration at the HexaSync OAuth endpoints and reset it for a new handshake
+     *
+     * Any existing token is removed and the integration goes back to inactive, exactly as Magento does when an
+     * admin clicks "Reauthorize". Magento activates it again once HexaSync finishes the token exchange.
      *
      * @param Integration $integration
-     * @return bool|Token
+     * @param string $endpoint URL Magento posts the consumer credentials to
+     * @param string $identityLinkUrl URL opened in the popup for the HexaSync login
+     * @return Integration
+     * @throws IntegrationException
      */
-    public function generateToken($integration)
-    {
-        $consumerId = $integration->getConsumerId();
-        $accessToken = $this->oauthService->getAccessToken($consumerId);
-        if (!$accessToken && $this->oauthService->createAccessToken($consumerId, true)) {
-            $accessToken = $this->oauthService->getAccessToken($consumerId);
-        }
-        return $accessToken;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function encrypt($hexaSyncData): string
-    {
-        /**
-         * @var $hexaSyncData DataObject
-         */
-        $hexaSyncDataString = $hexaSyncData->toJson();
-        $encrypted = $this->encryptor->encrypt($hexaSyncDataString);
-        return $encrypted;
+    public function prepareForOauthHandshake(
+        Integration $integration,
+        string $endpoint,
+        string $identityLinkUrl
+    ): Integration {
+        $this->oauthService->deleteIntegrationToken($integration->getConsumerId());
+        $integrationData = $this->getIntegrationData($integration->getName(), Integration::STATUS_INACTIVE);
+        $integrationData['integration_id'] = $integration->getId();
+        $integrationData['endpoint'] = $endpoint;
+        $integrationData['identity_link_url'] = $identityLinkUrl;
+        return $this->integrationService->update($integrationData);
     }
 
     /**
@@ -310,13 +281,17 @@ class HexaSyncIntegrationManagement implements HexaSyncIntegrationInterface
     public function saveConnectorInfo(HexaSyncInfoDataInterface $connector): HexaSyncInfoDataInterface
     {
         $store = $this->storeManager->getStore($connector->getStoreCode());
-        $scopeCode = ScopeInterface::SCOPE_STORE;
+        // core_config_data stores store-view values under "stores"; rows written as "store" are never read back.
+        $scopeCode = ScopeInterface::SCOPE_STORES;
         $storeId = $store->getId();
         $prefix = 'beehexa/connector/';
         $this->configManager->saveConfig($prefix . 'account', $connector->getAccount(), $scopeCode, $storeId);
         $this->configManager->saveConfig($prefix . 'status', $connector->getStatus(), $scopeCode, $storeId);
         $this->configManager->saveConfig($prefix . 'store_name', $connector->getStoreName(), $scopeCode, $storeId);
         $this->configManager->saveConfig($prefix . 'version', $connector->getVersion(), $scopeCode, $storeId);
+        // Without this the admin keeps showing the previous registration until the config cache is flushed.
+        $this->cacheTypeList->cleanType(ConfigCache::TYPE_IDENTIFIER);
+        $this->reinitableConfig->reinit();
         return $connector;
     }
 

@@ -9,6 +9,10 @@ namespace Beehexa\HexaSync\Controller\Adminhtml\Log;
 
 class Delete extends \Beehexa\HexaSync\Controller\Adminhtml\Log
 {
+    /**
+     * Authorization level required to delete a log entry
+     */
+    public const ADMIN_RESOURCE = 'Beehexa_HexaSync::log_delete';
 
     /**
      * Delete action

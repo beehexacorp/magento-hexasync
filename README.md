@@ -53,7 +53,15 @@ This is core modules for HexaSync's modules.
 
 ## Configuration
 
-Store -> Configuration -> Beehexa Corp
+Stores -> Configuration -> Beehexa Corp -> HexaSync Integration
+
+1. Check the **Service Endpoint** (default `https://app.hexasync.com`).
+2. Click **Register Store** and confirm.
+3. Sign in to HexaSync in the window that opens.
+
+The module creates the Magento integration and runs Magento's OAuth 1.0a handshake with HexaSync for you; there
+is no need to open System -> Integrations. When the window closes, the page reloads and shows the registered
+account. The handshake contract is described in [docs/hexasync-oauth-handshake.md](docs/hexasync-oauth-handshake.md).
 
 ## Specifications
 

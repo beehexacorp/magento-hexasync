@@ -11,7 +11,9 @@ abstract class Log extends \Magento\Backend\App\Action
 {
 
     protected $_coreRegistry;
-    const ADMIN_RESOURCE = 'Beehexa_HexaSync::top_level';
+    public const ADMIN_RESOURCE = 'Beehexa_HexaSync::log_view';
+
+    public const MENU_ID = 'Beehexa_HexaSync::beehexa_hexasync_log';
 
     /**
      * @param \Magento\Backend\App\Action\Context $context
@@ -33,7 +35,7 @@ abstract class Log extends \Magento\Backend\App\Action
      */
     public function initPage($resultPage)
     {
-        $resultPage->setActiveMenu(self::ADMIN_RESOURCE)
+        $resultPage->setActiveMenu(self::MENU_ID)
             ->addBreadcrumb(__('Beehexa'), __('Beehexa'))
             ->addBreadcrumb(__('Log'), __('Log'));
         return $resultPage;

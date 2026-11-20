@@ -10,13 +10,14 @@ use Beehexa\HexaSync\Api\HexaSyncIntegrationInterface;
 use Exception;
 use Magento\Backend\App\Action as BackendAction;
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Filter\StripTags;
 
-class Regenerate extends BackendAction
+class Regenerate extends BackendAction implements HttpPostActionInterface
 {
     /**
      * Authorization level of a basic admin session

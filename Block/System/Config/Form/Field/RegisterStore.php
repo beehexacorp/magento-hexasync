@@ -7,6 +7,9 @@
 namespace Beehexa\HexaSync\Block\System\Config\Form\Field;
 
 use Beehexa\HexaSync\Helper\Data as HexaSyncData;
+use Beehexa\HexaSync\Model\HexaSyncIntegrationManagement;
+use Beehexa\HexaSync\Model\OauthHandshake;
+use Magento\Integration\Model\Integration;
 use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
@@ -21,18 +24,34 @@ class RegisterStore extends Field
     protected $_hexasyncHelper;
 
     /**
+     * @var OauthHandshake
+     */
+    private OauthHandshake $oauthHandshake;
+
+    /**
+     * @var HexaSyncIntegrationManagement
+     */
+    private HexaSyncIntegrationManagement $integrationManagement;
+
+    /**
      * @param Context $context
      * @param HexaSyncData $hexasyncHelper
+     * @param OauthHandshake $oauthHandshake
+     * @param HexaSyncIntegrationManagement $integrationManagement
      * @param array $data
      * @param SecureHtmlRenderer|null $secureRenderer
      */
     public function __construct(
-        Context             $context,
-        HexaSyncData        $hexasyncHelper,
-        array               $data = [],
-        ?SecureHtmlRenderer $secureRenderer = null
+        Context                       $context,
+        HexaSyncData                  $hexasyncHelper,
+        OauthHandshake                $oauthHandshake,
+        HexaSyncIntegrationManagement $integrationManagement,
+        array                         $data = [],
+        ?SecureHtmlRenderer           $secureRenderer = null
     ) {
         $this->_hexasyncHelper = $hexasyncHelper;
+        $this->oauthHandshake = $oauthHandshake;
+        $this->integrationManagement = $integrationManagement;
         parent::__construct($context, $data, $secureRenderer);
     }
 
@@ -50,6 +69,24 @@ class RegisterStore extends Field
     }
 
     /**
+     * Service endpoint saved for the scope currently being edited
+     *
+     * @return string|null
+     */
+    private function getScopedServiceEndpoint(): ?string
+    {
+        $store = $this->getRequest()->getParam('store');
+        $website = $this->getRequest()->getParam('website');
+        if ($store) {
+            return $this->_hexasyncHelper->getServiceEndpoint(ScopeInterface::SCOPE_STORE, (string)$store);
+        }
+        if ($website) {
+            return $this->_hexasyncHelper->getServiceEndpoint(ScopeInterface::SCOPE_WEBSITE, (string)$website);
+        }
+        return $this->_hexasyncHelper->getServiceEndpoint();
+    }
+
+    /**
      * Get the button and scripts contents
      *
      * @param AbstractElement $element
@@ -63,7 +100,10 @@ class RegisterStore extends Field
             [
                 'button_label' => __($originalData['button_label']),
                 'html_id' => $element->getHtmlId(),
-                'hexasync_url' => $this->_hexasyncHelper->getServiceEndpoint(ScopeInterface::SCOPE_STORE),
+                'hexasync_url' => $this->getScopedServiceEndpoint(),
+                'allow_insecure' => $this->oauthHandshake->isInsecureEndpointAllowed(),
+                'already_active' => $this->integrationManagement->getIntegration()->getStatus()
+                    == Integration::STATUS_ACTIVE,
                 'ajax_url' => $this->_urlBuilder->getUrl(
                     'hexasync/integration/register',
                     ['_use_rewrite' => true, '_current' => true]

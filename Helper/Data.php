@@ -11,9 +11,9 @@ use Magento\Framework\App\Helper\AbstractHelper;
 
 class Data extends AbstractHelper
 {
-    const HEXASYNC_BASE_URL = 'https://beta.hexasync.com';
-    public const XML_CONFIG_PREFIX                = 'beehexa';
-    public const XML_CONFIG_SERVICE_ENDPOINT_PATH = 'beehexa/hexasync/service_endpoint';
+    public const HEXASYNC_BASE_URL = 'https://app.hexasync.com';
+    public const XML_CONFIG_PREFIX = 'beehexa';
+    public const XML_CONFIG_SERVICE_ENDPOINT_PATH = 'beehexa/hexasync/production_service';
 
     /**
      * Getting service endpoint.

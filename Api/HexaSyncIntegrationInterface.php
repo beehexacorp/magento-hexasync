@@ -34,14 +34,6 @@ interface HexaSyncIntegrationInterface
     public function getConnectorInfo(?string $storeId): \Beehexa\HexaSync\Api\Data\HexaSyncInfoDataInterface;
 
     /**
-     * Encrypting data
-     *
-     * @param \Magento\Framework\DataObject $hexaSyncData
-     * @return string
-     */
-    public function encrypt(\Magento\Framework\DataObject $hexaSyncData): string;
-
-    /**
      * Generate integration
      *
      * @return \Magento\Integration\Model\Integration

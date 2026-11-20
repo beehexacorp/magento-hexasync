@@ -9,6 +9,10 @@ namespace Beehexa\HexaSync\Controller\Adminhtml\Log;
 
 class Index extends \Magento\Backend\App\Action
 {
+    /**
+     * Authorization level required to view the synchronization log
+     */
+    public const ADMIN_RESOURCE = 'Beehexa_HexaSync::log_view';
 
     protected $resultPageFactory;
 
