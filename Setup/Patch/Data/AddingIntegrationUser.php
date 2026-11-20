@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © Magento, Inc. All rights reserved.
+ * Copyright © 2022 Beehexa All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -13,7 +13,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
 
 /**
- * Activate data collection mechanism
+ * Creates the HexaSync integration user on install
  */
 class AddingIntegrationUser implements DataPatchInterface
 {
@@ -46,7 +46,10 @@ class AddingIntegrationUser implements DataPatchInterface
      */
     public function apply(): \Magento\Framework\Setup\Patch\PatchInterface|AddingIntegrationUser|static
     {
-        $this->integrationManager->generateIntegration();
+        // The integration survives a module reinstall, so only create it when it is missing.
+        if (!$this->integrationManager->getIntegration()->getId()) {
+            $this->integrationManager->generateIntegration();
+        }
         return $this;
     }
 

@@ -10,5 +10,10 @@
         <hexasync>
             <integration_name>HexaSync Integration User</integration_name>
         </hexasync>
+        <beehexa>
+            <hexasync>
+                <production_service>https://app.hexasync.com</production_service>
+            </hexasync>
+        </beehexa>
     </default>
 </config>

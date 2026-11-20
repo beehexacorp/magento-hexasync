@@ -9,6 +9,10 @@ namespace Beehexa\HexaSync\Controller\Adminhtml\Log;
 
 class NewAction extends \Beehexa\HexaSync\Controller\Adminhtml\Log
 {
+    /**
+     * Authorization level required to create a log entry
+     */
+    public const ADMIN_RESOURCE = 'Beehexa_HexaSync::log_save';
 
     protected $resultForwardFactory;
 

@@ -1,5 +1,5 @@
 /**
- * Copyright © Magento, Inc. All rights reserved.
+ * Copyright © 2022 Beehexa All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -10,7 +10,7 @@ define([
     'jquery',
     'Magento_Ui/js/modal/confirm',
     'Magento_Ui/js/modal/alert',
-    'jquery/ui'
+    'jquery-ui-modules/widget'
 ], function ($, confirm, alert) {
     'use strict';
 
@@ -39,13 +39,14 @@ define([
             var result = this.options.failedText,
                 element = $('#' + this.options.elementId),
                 self = this,
-                params = {regenerate: true},
+                params = {regenerate: true, 'form_key': window.FORM_KEY},
                 msg = '',
                 fieldToCheck = this.options.fieldToCheck || 'success';
 
             element.removeClass('success').addClass('fail');
             $.ajax({
                 url: this.options.url,
+                type: 'POST',
                 showLoader: true,
                 data: params,
                 headers: this.options.headers || {}

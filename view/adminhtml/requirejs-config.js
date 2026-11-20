@@ -1,5 +1,5 @@
 /**
- * Copyright © Magento, Inc. All rights reserved.
+ * Copyright © 2022 Beehexa All rights reserved.
  * See COPYING.txt for license details.
  */
 

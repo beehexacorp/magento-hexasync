@@ -9,25 +9,25 @@
     <route url="/V1/beehexa/hexasync/connector-information" method="POST">
         <service class="Beehexa\HexaSync\Api\HexaSyncIntegrationInterface" method="saveConnectorInfo"/>
         <resources>
-            <resource ref="Magento_Backend::admin"/>
+            <resource ref="Beehexa_HexaSync::connector"/>
         </resources>
     </route>
     <route url="/V1/beehexa/hexasync/connector-information" method="GET">
         <service class="Beehexa\HexaSync\Api\HexaSyncIntegrationInterface" method="getConnectorInfo"/>
         <resources>
-            <resource ref="Magento_Backend::admin"/>
+            <resource ref="Beehexa_HexaSync::connector"/>
         </resources>
     </route>
     <route url="/V1/store-information" method="GET">
         <service class="\Beehexa\HexaSync\Api\StoreInformationInterface" method="getList"/>
         <resources>
-            <resource ref="Magento_Backend::admin"/>
+            <resource ref="Beehexa_HexaSync::connector"/>
         </resources>
     </route>
     <route url="/V1/store-information/:storeId" method="GET">
         <service class="\Beehexa\HexaSync\Api\StoreInformationInterface" method="get"/>
         <resources>
-            <resource ref="Magento_Backend::admin"/>
+            <resource ref="Beehexa_HexaSync::connector"/>
         </resources>
     </route>
 	<route url="/V1/hexasync/log" method="POST">

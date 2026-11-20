@@ -9,6 +9,10 @@ namespace Beehexa\HexaSync\Controller\Adminhtml\Log;
 
 class InlineEdit extends \Magento\Backend\App\Action
 {
+    /**
+     * Authorization level required to edit a log entry
+     */
+    public const ADMIN_RESOURCE = 'Beehexa_HexaSync::log_update';
 
     protected $jsonFactory;
 
